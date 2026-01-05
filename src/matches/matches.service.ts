@@ -3,10 +3,14 @@ import { CreateMatchDto } from './dto/create-match.dto';
 import { UpdateMatchDto } from './dto/update-match.dto';
 import { Repository } from 'typeorm';
 import { Matches } from './entities/match.entity';
+import { InjectRepository } from '@nestjs/typeorm';
 
 @Injectable()
 export class MatchesService {
-  constructor(private readonly matchesRepository: Repository<Matches>) {}
+  constructor(
+    @InjectRepository(Matches)
+    private readonly matchesRepository: Repository<Matches>,
+  ) {}
   async create(createMatchDto: CreateMatchDto): Promise<Matches> {
     const match = this.matchesRepository.create(createMatchDto);
     return this.matchesRepository.save(match);
