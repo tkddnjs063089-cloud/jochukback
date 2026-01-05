@@ -10,11 +10,11 @@ import {
 import { Matches } from '../../matches/entities/match.entity';
 import { Players } from '../../players/entities/player.entity';
 
-@Index('match_records_pkey', ['id'])
-@Index('unique_mom_per_match', ['matchId'])
+@Index('match_records_pkey', ['id'], { unique: true })
 @Index('match_records_match_id_player_id_key', ['matchId', 'playerId'], {
   unique: true,
 })
+@Index('unique_mom_per_match', ['matchId'], { unique: true })
 @Entity('match_records', { schema: 'public' })
 export class MatchRecords {
   @PrimaryGeneratedColumn({ type: 'integer', name: 'id' })
@@ -26,7 +26,7 @@ export class MatchRecords {
   @Column('integer', { name: 'player_id', unique: true })
   playerId: number;
 
-  @Column('boolean', { name: 'attendance', default: () => 'false' })
+  @Column('boolean', { name: 'attendance' })
   attendance: boolean;
 
   @Column('integer', { name: 'goals', default: () => '0' })
@@ -35,11 +35,15 @@ export class MatchRecords {
   @Column('integer', { name: 'assists', default: () => '0' })
   assists: number;
 
-  @Column('integer', { name: 'clean_sheet', default: () => '0' })
-  cleanSheet: number;
-
   @Column('boolean', { name: 'mom', default: () => 'false' })
   mom: boolean;
+
+  @Column('integer', {
+    name: 'clean_sheet',
+    nullable: true,
+    default: () => '0',
+  })
+  cleanSheet: number | null;
 
   @OneToOne(() => Matches, (matches) => matches.matchRecords, {
     onDelete: 'CASCADE',

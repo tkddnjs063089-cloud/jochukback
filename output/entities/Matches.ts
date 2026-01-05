@@ -2,10 +2,13 @@ import {
   Column,
   Entity,
   Index,
+  JoinColumn,
+  ManyToOne,
   OneToOne,
   PrimaryGeneratedColumn,
 } from "typeorm";
 import { MatchRecords } from "./MatchRecords";
+import { MatchDates } from "./MatchDates";
 
 @Index("matches_pkey", ["id"], { unique: true })
 @Index(
@@ -36,4 +39,8 @@ export class Matches {
 
   @OneToOne(() => MatchRecords, (matchRecords) => matchRecords.match)
   matchRecords: MatchRecords;
+
+  @ManyToOne(() => MatchDates, (matchDates) => matchDates.matches)
+  @JoinColumn([{ name: "match_date_id", referencedColumnName: "id" }])
+  matchDate_2: MatchDates;
 }

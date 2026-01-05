@@ -8,6 +8,7 @@ import { ExpensesModule } from './expenses/expenses.module';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { configService } from './config/config.service';
 import { ConfigModule, ConfigService } from '@nestjs/config';
+import { MatchDatesModule } from './match-dates/match-dates.module';
 
 @Module({
   imports: [
@@ -29,6 +30,7 @@ import { ConfigModule, ConfigService } from '@nestjs/config';
     MatchesModule,
     MatchRecordsModule,
     ExpensesModule,
+    MatchDatesModule,
   ],
   controllers: [AppController],
   providers: [AppService],
