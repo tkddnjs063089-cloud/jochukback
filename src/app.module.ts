@@ -11,10 +11,10 @@ import { ConfigModule } from '@nestjs/config';
 
 @Module({
   imports: [
-    PlayersModule,
-    MatchesModule,
-    MatchRecordsModule,
-    ExpensesModule,
+    ConfigModule.forRoot({
+      isGlobal: true,
+    }),
+
     TypeOrmModule.forRoot({
       type: 'postgres',
       host: process.env.DB_HOST,
@@ -22,11 +22,14 @@ import { ConfigModule } from '@nestjs/config';
       username: process.env.DB_USERNAME,
       password: process.env.DB_PASSWORD,
       database: process.env.DB_NAME,
-      entities: [__dirname + '/../**/*.entity{.ts,.js}'],
+      autoLoadEntities: true,
       synchronize: false,
     }),
+
+    PlayersModule,
+    MatchesModule,
+    MatchRecordsModule,
+    ExpensesModule,
   ],
-  controllers: [AppController],
-  providers: [AppService],
 })
 export class AppModule {}
