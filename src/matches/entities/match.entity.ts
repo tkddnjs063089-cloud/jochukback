@@ -18,14 +18,14 @@ export class Matches {
   @PrimaryGeneratedColumn({ type: 'integer', name: 'id' })
   id: number;
 
-  @Column('date', { name: 'match_date', unique: true })
+  @Column('date', { name: 'match_date' })
   matchDate: string;
 
-  @Column('integer', { name: 'match_order', unique: true })
+  @Column('integer', { name: 'match_order' })
   matchOrder: number;
 
-  @Column('character varying', { name: 'team_type', unique: true, length: 20 })
-  teamType: string;
+  @Column('character varying', { name: 'team_type', length: 20 })
+  teamType: 'PINK' | 'BLACK' = 'PINK';
 
   @Column('timestamp without time zone', {
     name: 'created_at',
