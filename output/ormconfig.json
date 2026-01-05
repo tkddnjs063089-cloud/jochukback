@@ -1,0 +1,13 @@
+[
+  {
+    "name": "default",
+    "type": "postgres",
+    "host": "mainline.proxy.rlwy.net",
+    "port": 42639,
+    "username": "postgres",
+    "password": "lSZgiahZDTCZXlHgrjygqEUOsVnvMdai",
+    "database": "",
+    "synchronize": false,
+    "entities": ["entities/*.js"]
+  }
+]
