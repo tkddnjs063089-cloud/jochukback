@@ -1,4 +1,8 @@
-import { Injectable, NotFoundException } from '@nestjs/common';
+import {
+  Injectable,
+  InternalServerErrorException,
+  NotFoundException,
+} from '@nestjs/common';
 import { CreatePlayerDto } from './dto/create-player.dto';
 import { UpdatePlayerDto } from './dto/update-player.dto';
 import { Repository } from 'typeorm';
@@ -26,18 +30,20 @@ export class PlayersService {
     }
     return player;
   }
-  async update(id: number, updatePlayerDto: UpdatePlayerDto): Promise<Players> {
+  async update(id: number, updatePlayerDto: UpdatePlayerDto): Promise<string> {
     const player = await this.playersRepository.findOne({ where: { id } });
     if (!player) {
       throw new NotFoundException('해당 선수를 찾을 수 없습니다.');
     }
-    return this.playersRepository.save(Object.assign(player, updatePlayerDto));
+    await this.playersRepository.save(Object.assign(player, updatePlayerDto));
+    return `${player.name} 선수가 수정되었습니다.`;
   }
-  async remove(id: number): Promise<void> {
-    const player = await this.playersRepository.findOne({ where: { id } });
+  async remove(name: string): Promise<string> {
+    const player = await this.playersRepository.findOne({ where: { name } });
     if (!player) {
       throw new NotFoundException('해당 선수를 찾을 수 없습니다.');
     }
-    await this.playersRepository.remove(player);
+    await this.playersRepository.delete(player.id);
+    return `${player.name} 선수가 삭제되었습니다.`;
   }
 }

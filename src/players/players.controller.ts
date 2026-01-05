@@ -31,12 +31,11 @@ export class PlayersController {
   async update(
     @Param('id') id: number,
     @Body() updatePlayerDto: UpdatePlayerDto,
-  ): Promise<Players> {
+  ): Promise<string> {
     return await this.playersService.update(id, updatePlayerDto);
   }
-  @Delete(':id')
-  async remove(@Param('id') id: number): Promise<{ message: string }> {
-    await this.playersService.remove(id);
-    return { message: `${id} 선수가 삭제되었습니다.` };
+  @Delete(':name')
+  async remove(@Param('name') name: string): Promise<string> {
+    return await this.playersService.remove(name);
   }
 }
