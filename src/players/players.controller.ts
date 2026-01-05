@@ -16,26 +16,27 @@ import { Players } from './entities/player.entity';
 export class PlayersController {
   constructor(private readonly playersService: PlayersService) {}
   @Post()
-  create(@Body() createPlayerDto: CreatePlayerDto): Promise<Players> {
-    return this.playersService.create(createPlayerDto);
+  async create(@Body() createPlayerDto: CreatePlayerDto): Promise<string> {
+    return await this.playersService.create(createPlayerDto);
   }
   @Get()
-  findAll(): Promise<Players[]> {
-    return this.playersService.findAll();
+  async findAll(): Promise<Players[]> {
+    return await this.playersService.findAll();
   }
   @Get(':id')
-  findOne(@Param('id') id: number): Promise<Players> {
-    return this.playersService.findOne(id);
+  async findOne(@Param('id') id: number): Promise<Players> {
+    return await this.playersService.findOne(id);
   }
   @Patch(':id')
-  update(
+  async update(
     @Param('id') id: number,
     @Body() updatePlayerDto: UpdatePlayerDto,
   ): Promise<Players> {
-    return this.playersService.update(id, updatePlayerDto);
+    return await this.playersService.update(id, updatePlayerDto);
   }
   @Delete(':id')
-  remove(@Param('id') id: number): Promise<void> {
-    return this.playersService.remove(id);
+  async remove(@Param('id') id: number): Promise<{ message: string }> {
+    await this.playersService.remove(id);
+    return { message: `${id} 선수가 삭제되었습니다.` };
   }
 }
