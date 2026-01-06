@@ -22,7 +22,9 @@ export class TeamsController {
   @ApiOperation({ summary: '팀 등록', description: '새로운 팀을 등록합니다.' })
   @ApiBody({ type: CreateTeamDto })
   @ApiResponse({ status: 201, description: '팀이 성공적으로 등록되었습니다.' })
-  async create(@Body() createTeamDto: CreateTeamDto): Promise<string> {
+  async create(
+    @Body() createTeamDto: CreateTeamDto,
+  ): Promise<{ message: string; team: Teams }> {
     return await this.teamsService.create(createTeamDto);
   }
   @Get()
@@ -51,14 +53,14 @@ export class TeamsController {
   async update(
     @Param('id') id: number,
     @Body() updateTeamDto: UpdateTeamDto,
-  ): Promise<string> {
+  ): Promise<{ message: string; team: Teams }> {
     return await this.teamsService.update(id, updateTeamDto);
   }
   @Delete(':id')
   @ApiOperation({ summary: '팀 삭제', description: '특정 팀을 삭제합니다.' })
   @ApiParam({ name: 'id', description: '팀 ID', example: 1 })
   @ApiResponse({ status: 200, description: '팀 삭제 성공' })
-  async remove(@Param('id') id: number): Promise<string> {
+  async remove(@Param('id') id: number): Promise<{ message: string }> {
     return await this.teamsService.remove(id);
   }
 }

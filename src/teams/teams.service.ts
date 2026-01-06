@@ -15,7 +15,9 @@ export class TeamsService {
     private readonly playersRepository: Repository<Players>,
   ) {}
 
-  async create(createTeamDto: CreateTeamDto): Promise<string> {
+  async create(
+    createTeamDto: CreateTeamDto,
+  ): Promise<{ message: string; team: Teams }> {
     // 팀 생성
     const team = this.teamsRepository.create({
       teamName: createTeamDto.teamName,
@@ -30,7 +32,7 @@ export class TeamsService {
       );
     }
 
-    return `${team.teamName} 팀이 생성되었습니다.`;
+    return { message: `${team.teamName} 팀이 생성되었습니다.`, team };
   }
 
   async findAll(): Promise<Teams[]> {
@@ -48,7 +50,10 @@ export class TeamsService {
     return team;
   }
 
-  async update(id: number, updateTeamDto: UpdateTeamDto): Promise<string> {
+  async update(
+    id: number,
+    updateTeamDto: UpdateTeamDto,
+  ): Promise<{ message: string; team: Teams }> {
     const team = await this.teamsRepository.findOne({ where: { id } });
     if (!team) {
       throw new NotFoundException('해당 팀을 찾을 수 없습니다.');
@@ -78,15 +83,16 @@ export class TeamsService {
       }
     }
 
-    return `${team.teamName} 팀이 수정되었습니다.`;
+    return { message: `${team.teamName} 팀이 수정되었습니다.`, team };
   }
 
-  async remove(id: number): Promise<string> {
+  async remove(id: number): Promise<{ message: string }> {
     const team = await this.teamsRepository.findOne({ where: { id } });
     if (!team) {
       throw new NotFoundException('해당 팀을 찾을 수 없습니다.');
     }
+    const teamName = team.teamName;
     await this.teamsRepository.remove(team);
-    return `${team.teamName} 팀이 삭제되었습니다.`;
+    return { message: `${teamName} 팀이 삭제되었습니다.` };
   }
 }
