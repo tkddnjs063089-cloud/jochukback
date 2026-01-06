@@ -36,7 +36,6 @@ export class Players {
 
   @OneToMany(() => MembershipFees, (membershipFees) => membershipFees.player)
   membershipFees: MembershipFees[];
-
   @ManyToOne(() => Teams, (teams) => teams.players, { onDelete: 'CASCADE' })
   @JoinColumn([{ name: 'team_id', referencedColumnName: 'id' }])
   team: Teams;

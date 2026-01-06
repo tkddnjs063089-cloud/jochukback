@@ -23,6 +23,6 @@ export class Teams {
   })
   createdAt: Date | null;
 
-  @OneToMany(() => Players, (players) => players.team)
+  @OneToMany(() => Players, (players) => players.team, { onDelete: 'CASCADE' })
   players: Players[];
 }
