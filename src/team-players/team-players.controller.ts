@@ -10,7 +10,7 @@ import {
 import { TeamPlayersService } from './team-players.service';
 import { CreateTeamPlayerDto } from './dto/create-team-player.dto';
 import { UpdateTeamPlayerDto } from './dto/update-team-player.dto';
-import { ApiOperation, ApiParam, ApiResponse } from '@nestjs/swagger';
+import { ApiBody, ApiOperation, ApiParam, ApiResponse } from '@nestjs/swagger';
 import { TeamPlayers } from './entities/team-player.entity';
 import { ApiTags } from '@nestjs/swagger';
 
@@ -24,6 +24,7 @@ export class TeamPlayersController {
     summary: '팀 선수 등록',
     description: '새로운 팀 선수를 등록합니다.',
   })
+  @ApiBody({ type: CreateTeamPlayerDto })
   @ApiResponse({
     status: 201,
     description: '팀 선수가 성공적으로 등록되었습니다.',

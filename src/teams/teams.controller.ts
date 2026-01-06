@@ -10,9 +10,8 @@ import {
 import { TeamsService } from './teams.service';
 import { CreateTeamDto } from './dto/create-team.dto';
 import { UpdateTeamDto } from './dto/update-team.dto';
-import { ApiOperation, ApiResponse } from '@nestjs/swagger';
+import { ApiBody, ApiOperation, ApiParam, ApiResponse } from '@nestjs/swagger';
 import { Teams } from './entities/team.entity';
-import { ApiParam } from '@nestjs/swagger';
 import { ApiTags } from '@nestjs/swagger';
 
 @ApiTags('teams')
@@ -21,6 +20,7 @@ export class TeamsController {
   constructor(private readonly teamsService: TeamsService) {}
   @Post()
   @ApiOperation({ summary: '팀 등록', description: '새로운 팀을 등록합니다.' })
+  @ApiBody({ type: CreateTeamDto })
   @ApiResponse({ status: 201, description: '팀이 성공적으로 등록되었습니다.' })
   async create(@Body() createTeamDto: CreateTeamDto): Promise<string> {
     return await this.teamsService.create(createTeamDto);
