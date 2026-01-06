@@ -5,7 +5,7 @@ import {
   OneToMany,
   PrimaryGeneratedColumn,
 } from "typeorm";
-import { TeamPlayers } from "./TeamPlayers";
+import { Players } from "./Players";
 
 @Index("teams_pkey", ["id"], { unique: true })
 @Entity("teams", { schema: "public" })
@@ -13,8 +13,8 @@ export class Teams {
   @PrimaryGeneratedColumn({ type: "integer", name: "id" })
   id: number;
 
-  @Column("character varying", { name: "name", length: 50 })
-  name: string;
+  @Column("character varying", { name: "team_name", length: 50 })
+  teamName: string;
 
   @Column("timestamp without time zone", {
     name: "created_at",
@@ -23,6 +23,6 @@ export class Teams {
   })
   createdAt: Date | null;
 
-  @OneToMany(() => TeamPlayers, (teamPlayers) => teamPlayers.team)
-  teamPlayers: TeamPlayers[];
+  @OneToMany(() => Players, (players) => players.team)
+  players: Players[];
 }

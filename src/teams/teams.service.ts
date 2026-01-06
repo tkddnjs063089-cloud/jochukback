@@ -14,7 +14,7 @@ export class TeamsService {
   async create(createTeamDto: CreateTeamDto): Promise<string> {
     const team = this.teamsRepository.create(createTeamDto);
     await this.teamsRepository.save(team);
-    return `${team.name} 팀이 생성되었습니다.`;
+    return `${team.teamName} 팀이 생성되었습니다.`;
   }
   async findAll(): Promise<Teams[]> {
     return this.teamsRepository.find();
@@ -32,7 +32,7 @@ export class TeamsService {
       throw new NotFoundException('해당 팀을 찾을 수 없습니다.');
     }
     await this.teamsRepository.save(Object.assign(team, updateTeamDto));
-    return `${team.name} 팀이 수정되었습니다.`;
+    return `${team.teamName} 팀이 수정되었습니다.`;
   }
   async remove(id: number): Promise<string> {
     const team = await this.teamsRepository.findOne({ where: { id } });
@@ -40,6 +40,6 @@ export class TeamsService {
       throw new NotFoundException('해당 팀을 찾을 수 없습니다.');
     }
     await this.teamsRepository.remove(team);
-    return `${team.name} 팀이 삭제되었습니다.`;
+    return `${team.teamName} 팀이 삭제되었습니다.`;
   }
 }

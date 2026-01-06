@@ -2,13 +2,15 @@ import {
   Column,
   Entity,
   Index,
+  JoinColumn,
+  ManyToOne,
   OneToMany,
   PrimaryGeneratedColumn,
 } from "typeorm";
 import { Expenses } from "./Expenses";
 import { MatchRecords } from "./MatchRecords";
 import { MembershipFees } from "./MembershipFees";
-import { TeamPlayers } from "./TeamPlayers";
+import { Teams } from "./Teams";
 
 @Index("players_pkey", ["id"], { unique: true })
 @Entity("players", { schema: "public" })
@@ -35,6 +37,7 @@ export class Players {
   @OneToMany(() => MembershipFees, (membershipFees) => membershipFees.player)
   membershipFees: MembershipFees[];
 
-  @OneToMany(() => TeamPlayers, (teamPlayers) => teamPlayers.player)
-  teamPlayers: TeamPlayers[];
+  @ManyToOne(() => Teams, (teams) => teams.players, { onDelete: "CASCADE" })
+  @JoinColumn([{ name: "team_id", referencedColumnName: "id" }])
+  team: Teams;
 }
