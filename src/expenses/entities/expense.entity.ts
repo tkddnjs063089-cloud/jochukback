@@ -21,11 +21,6 @@ export class Expenses {
   @Column('integer', { name: 'amount' })
   amount: number;
 
-  @Column('integer', { name: 'month_count' })
-  @IsNotEmpty({ message: '납부 월 수는 필수 입력 항목입니다.' })
-  @IsNumber()
-  monthCount: number;
-
   @Column('character varying', { name: 'category', nullable: true, length: 30 })
   category: string | null;
 
@@ -39,10 +34,10 @@ export class Expenses {
   })
   createdAt: Date | null;
 
-  @Column('integer', { name: 'player_id', nullable: true })
-  playerId: number | null;
+  @Column('integer', { name: 'monthcount' })
+  monthcount: number;
 
-  @ManyToOne(() => Players, (player) => player.expenses)
-  @JoinColumn({ name: 'player_id' })
+  @ManyToOne(() => Players, (players) => players.expenses)
+  @JoinColumn([{ name: 'player_id', referencedColumnName: 'id' }])
   player: Players;
 }

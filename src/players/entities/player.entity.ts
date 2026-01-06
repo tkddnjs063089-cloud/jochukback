@@ -5,8 +5,9 @@ import {
   OneToMany,
   PrimaryGeneratedColumn,
 } from 'typeorm';
+import { Expenses } from '../../expenses/entities/expense.entity';
 import { MatchRecords } from '../../match_records/entities/match_record.entity';
-import { Expenses } from 'src/expenses/entities/expense.entity';
+import { TeamPlayers } from '../../team-players/entities/team-player.entity';
 
 @Index('players_pkey', ['id'], { unique: true })
 @Entity('players', { schema: 'public' })
@@ -17,8 +18,8 @@ export class Players {
   @Column('character varying', { name: 'name', length: 50 })
   name: string;
 
-  @Column('character varying', { name: 'role', length: 20 })
-  role: string;
+  @Column('character varying', { name: 'position', length: 20 })
+  position: string;
 
   @Column('character varying', {
     name: 'status',
@@ -34,10 +35,12 @@ export class Players {
   })
   createdAt: Date | null;
 
+  @OneToMany(() => Expenses, (expenses) => expenses.player)
+  expenses: Expenses[];
+
   @OneToMany(() => MatchRecords, (matchRecords) => matchRecords.player)
   matchRecords: MatchRecords[];
 
-  // ✅ 새로 추가
-  @OneToMany(() => Expenses, (expense) => expense.player)
-  expenses: Expenses[];
+  @OneToMany(() => TeamPlayers, (teamPlayers) => teamPlayers.player)
+  teamPlayers: TeamPlayers[];
 }

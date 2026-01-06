@@ -2,12 +2,26 @@ import { NestFactory } from '@nestjs/core';
 import { AppModule } from './app.module';
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
 import { ValidationPipe } from '@nestjs/common';
+// import * as rateLimit from 'express-rate-limit';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
 
   // ValidationPipe 설정
-  app.useGlobalPipes(new ValidationPipe({ transform: true }));
+  app.useGlobalPipes(
+    new ValidationPipe({
+      whitelist: true,
+      transform: true,
+      forbidNonWhitelisted: true,
+    }),
+  );
+
+  // app.use(
+  // rateLimit({
+  //   windowMs: 15 * 60 * 1000, // 15분
+  //   max: 100, // 15분 동안 최대 100개의 요청
+  // }),
+  // );
 
   // CORS 설정
   app.enableCors({
@@ -25,6 +39,8 @@ async function bootstrap() {
     .addTag('match-records', '경기 기록 관리')
     .addTag('match-dates', '경기 일정 관리')
     .addTag('expenses', '경비 관리')
+    .addTag('team-players', '팀 선수 관리')
+    .addTag('teams', '팀 관리')
     .build();
 
   const document = SwaggerModule.createDocument(app, config);

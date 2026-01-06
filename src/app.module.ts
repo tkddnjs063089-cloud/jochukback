@@ -14,6 +14,10 @@ import { Matches } from './matches/entities/match.entity';
 import { Expenses } from './expenses/entities/expense.entity';
 import { MatchRecords } from './match_records/entities/match_record.entity';
 import { MatchDates } from './match-dates/entities/match-date.entity';
+import { TeamPlayersModule } from './team-players/team-players.module';
+import { TeamsModule } from './teams/teams.module';
+import { TeamPlayers } from './team-players/entities/team-player.entity';
+import { Teams } from './teams/entities/team.entity';
 
 @Module({
   imports: [
@@ -29,7 +33,15 @@ import { MatchDates } from './match-dates/entities/match-date.entity';
       database: process.env.DB_NAME,
       autoLoadEntities: true,
       synchronize: false,
-      entities: [Players, Matches, MatchRecords, MatchDates, Expenses],
+      entities: [
+        Players,
+        Matches,
+        MatchRecords,
+        MatchDates,
+        Expenses,
+        TeamPlayers,
+        Teams,
+      ],
     }),
 
     PlayersModule,
@@ -37,6 +49,8 @@ import { MatchDates } from './match-dates/entities/match-date.entity';
     MatchRecordsModule,
     ExpensesModule,
     MatchDatesModule,
+    TeamPlayersModule,
+    TeamsModule,
   ],
   controllers: [AppController],
   providers: [AppService],

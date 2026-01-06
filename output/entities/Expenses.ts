@@ -1,4 +1,12 @@
-import { Column, Entity, Index, PrimaryGeneratedColumn } from "typeorm";
+import {
+  Column,
+  Entity,
+  Index,
+  JoinColumn,
+  ManyToOne,
+  PrimaryGeneratedColumn,
+} from "typeorm";
+import { Players } from "./Players";
 
 @Index("expenses_pkey", ["id"], { unique: true })
 @Entity("expenses", { schema: "public" })
@@ -24,4 +32,11 @@ export class Expenses {
     default: () => "now()",
   })
   createdAt: Date | null;
+
+  @Column("integer", { name: "monthcount" })
+  monthcount: number;
+
+  @ManyToOne(() => Players, (players) => players.expenses)
+  @JoinColumn([{ name: "player_id", referencedColumnName: "id" }])
+  player: Players;
 }

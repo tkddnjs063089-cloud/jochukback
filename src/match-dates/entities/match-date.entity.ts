@@ -31,6 +31,6 @@ export class MatchDates {
   })
   eventName: string | null;
 
-  @OneToMany(() => Matches, (matches) => matches.matchDateId)
+  @OneToMany(() => Matches, (matches) => matches.matchDateInfo)
   matches: Matches[];
 }

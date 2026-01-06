@@ -22,13 +22,13 @@ export class Matches {
   @PrimaryGeneratedColumn({ type: 'integer', name: 'id' })
   id: number;
 
-  @Column('date', { name: 'match_date' }) // ✅ unique 제거
+  @Column('date', { name: 'match_date' })
   matchDate: string;
 
-  @Column('integer', { name: 'match_order' }) // ✅ unique 제거
+  @Column('integer', { name: 'match_order' })
   matchOrder: number;
 
-  @Column('character varying', { name: 'team_type', length: 20 }) // ✅ unique 제거
+  @Column('character varying', { name: 'team_type', length: 20 })
   teamType: string;
 
   @Column('timestamp without time zone', {
@@ -38,13 +38,12 @@ export class Matches {
   })
   createdAt: Date | null;
 
-  @Column('integer', { name: 'match_date_id', nullable: true }) // ✅ FK 컬럼 추가
-  matchDateId: number | null;
+  /** ✅ FK 컬럼 + 관계는 이렇게 */
+  @ManyToOne(() => MatchDates, (matchDate) => matchDate.matches)
+  @JoinColumn({ name: 'match_date_id' })
+  matchDateInfo: MatchDates;
 
-  @OneToOne(() => MatchRecords, (matchRecords) => matchRecords.match)
+  /** ✅ match_records 와의 1:1 관계 */
+  @OneToOne(() => MatchRecords, (record) => record.match)
   matchRecords: MatchRecords;
-
-  @ManyToOne(() => MatchDates, (matchDates) => matchDates.matches)
-  @JoinColumn({ name: 'match_date_id' }) // ✅ 수정
-  matchDateInfo: MatchDates; // ✅ 이름 변경
 }

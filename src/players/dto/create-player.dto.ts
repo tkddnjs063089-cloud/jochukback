@@ -16,7 +16,7 @@ export class CreatePlayerDto {
   @IsString()
   @IsNotEmpty({ message: '역할은 필수 입력 항목입니다.' })
   @MaxLength(20, { message: '역할은 최대 20자 이하여야 합니다.' })
-  role: string;
+  position: string;
 
   @ApiPropertyOptional({
     description: '선수 상태',

@@ -11,10 +11,10 @@ import { Matches } from '../../matches/entities/match.entity';
 import { Players } from '../../players/entities/player.entity';
 
 @Index('match_records_pkey', ['id'], { unique: true })
+@Index('unique_mom_per_match', ['matchId'], { unique: true })
 @Index('match_records_match_id_player_id_key', ['matchId', 'playerId'], {
   unique: true,
 })
-@Index('unique_mom_per_match', ['matchId'], { unique: true })
 @Entity('match_records', { schema: 'public' })
 export class MatchRecords {
   @PrimaryGeneratedColumn({ type: 'integer', name: 'id' })
