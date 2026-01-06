@@ -4,25 +4,29 @@ import {
   Index,
   OneToMany,
   PrimaryGeneratedColumn,
-} from "typeorm";
-import { Players } from "./Players";
+} from 'typeorm';
+import { Players } from './Players';
+import { TeamPlayers } from './TeamPlayers';
 
-@Index("teams_pkey", ["id"], { unique: true })
-@Entity("teams", { schema: "public" })
+@Index('teams_pkey', ['id'], { unique: true })
+@Entity('teams', { schema: 'public' })
 export class Teams {
-  @PrimaryGeneratedColumn({ type: "integer", name: "id" })
+  @PrimaryGeneratedColumn({ type: 'integer', name: 'id' })
   id: number;
 
-  @Column("character varying", { name: "team_name", length: 50 })
+  @Column('character varying', { name: 'team_name', length: 50 })
   teamName: string;
 
-  @Column("timestamp without time zone", {
-    name: "created_at",
+  @Column('timestamp without time zone', {
+    name: 'created_at',
     nullable: true,
-    default: () => "now()",
+    default: () => 'now()',
   })
   createdAt: Date | null;
 
   @OneToMany(() => Players, (players) => players.team)
   players: Players[];
+
+  @OneToMany(() => TeamPlayers, (teamPlayers) => teamPlayers.team)
+  teamPlayers: TeamPlayers[];
 }
