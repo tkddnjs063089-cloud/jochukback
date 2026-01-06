@@ -34,9 +34,6 @@ export class Expenses {
   })
   createdAt: Date | null;
 
-  @Column('integer', { name: 'monthcount' })
-  monthcount: number;
-
   @ManyToOne(() => Players, (players) => players.expenses)
   @JoinColumn([{ name: 'player_id', referencedColumnName: 'id' }])
   player: Players;

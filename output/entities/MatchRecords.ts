@@ -45,6 +45,15 @@ export class MatchRecords {
   })
   cleanSheet: number | null;
 
+  @Column("integer", { name: "wins", nullable: true, default: () => "0" })
+  wins: number | null;
+
+  @Column("integer", { name: "draws", nullable: true, default: () => "0" })
+  draws: number | null;
+
+  @Column("integer", { name: "losses", nullable: true, default: () => "0" })
+  losses: number | null;
+
   @OneToOne(() => Matches, (matches) => matches.matchRecords, {
     onDelete: "CASCADE",
   })

@@ -8,6 +8,7 @@ import {
 import { Expenses } from '../../expenses/entities/expense.entity';
 import { MatchRecords } from '../../match_records/entities/match_record.entity';
 import { TeamPlayers } from '../../team-players/entities/team-player.entity';
+import { MembershipFees } from 'src/membershipfees/entities/membershipfee.entity';
 
 @Index('players_pkey', ['id'], { unique: true })
 @Entity('players', { schema: 'public' })
@@ -33,4 +34,7 @@ export class Players {
 
   @OneToMany(() => TeamPlayers, (teamPlayers) => teamPlayers.player)
   teamPlayers: TeamPlayers[];
+
+  @OneToMany(() => MembershipFees, (membershipFees) => membershipFees.player)
+  membershipFees: MembershipFees[];
 }

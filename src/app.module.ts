@@ -18,6 +18,8 @@ import { TeamPlayersModule } from './team-players/team-players.module';
 import { TeamsModule } from './teams/teams.module';
 import { TeamPlayers } from './team-players/entities/team-player.entity';
 import { Teams } from './teams/entities/team.entity';
+import { MembershipfeesModule } from './membershipfees/membershipfees.module';
+import { MembershipFees } from './membershipfees/entities/membershipfee.entity';
 
 @Module({
   imports: [
@@ -41,6 +43,7 @@ import { Teams } from './teams/entities/team.entity';
         Expenses,
         TeamPlayers,
         Teams,
+        MembershipFees,
       ],
     }),
 
@@ -51,6 +54,7 @@ import { Teams } from './teams/entities/team.entity';
     MatchDatesModule,
     TeamPlayersModule,
     TeamsModule,
+    MembershipfeesModule,
   ],
   controllers: [AppController],
   providers: [AppService],

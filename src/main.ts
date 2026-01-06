@@ -25,11 +25,7 @@ async function bootstrap() {
 
   // CORS 설정
   app.enableCors({
-    origin: [
-      'http://localhost:3000',
-      'http://localhost:3001',
-      'https://your-frontend.vercel.app',
-    ],
+    origin: true,
     credentials: true,
   });
 
@@ -45,6 +41,7 @@ async function bootstrap() {
     .addTag('expenses', '경비 관리')
     .addTag('team-players', '팀 선수 관리')
     .addTag('teams', '팀 관리')
+    .addTag('membershipfees', '회비 관리')
     .build();
 
   const document = SwaggerModule.createDocument(app, config);
