@@ -1,3 +1,4 @@
+// matches.entity.ts
 import {
   Column,
   Entity,
@@ -21,13 +22,13 @@ export class Matches {
   @PrimaryGeneratedColumn({ type: 'integer', name: 'id' })
   id: number;
 
-  @Column('date', { name: 'match_date', unique: true })
+  @Column('date', { name: 'match_date' }) // ✅ unique 제거
   matchDate: string;
 
-  @Column('integer', { name: 'match_order', unique: true })
+  @Column('integer', { name: 'match_order' }) // ✅ unique 제거
   matchOrder: number;
 
-  @Column('character varying', { name: 'team_type', unique: true, length: 20 })
+  @Column('character varying', { name: 'team_type', length: 20 }) // ✅ unique 제거
   teamType: string;
 
   @Column('timestamp without time zone', {
@@ -37,10 +38,13 @@ export class Matches {
   })
   createdAt: Date | null;
 
+  @Column('integer', { name: 'match_date_id', nullable: true }) // ✅ FK 컬럼 추가
+  matchDateId: number | null;
+
   @OneToOne(() => MatchRecords, (matchRecords) => matchRecords.match)
   matchRecords: MatchRecords;
 
   @ManyToOne(() => MatchDates, (matchDates) => matchDates.matches)
-  @JoinColumn([{ name: 'match_date_id', referencedColumnName: 'id' }])
-  matchDate_2: MatchDates;
+  @JoinColumn({ name: 'match_date_id' }) // ✅ 수정
+  matchDateInfo: MatchDates; // ✅ 이름 변경
 }

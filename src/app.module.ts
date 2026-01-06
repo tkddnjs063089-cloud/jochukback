@@ -9,6 +9,11 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { configService } from './config/config.service';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { MatchDatesModule } from './match-dates/match-dates.module';
+import { Players } from './players/entities/player.entity';
+import { Matches } from './matches/entities/match.entity';
+import { Expenses } from './expenses/entities/expense.entity';
+import { MatchRecords } from './match_records/entities/match_record.entity';
+import { MatchDates } from './match-dates/entities/match-date.entity';
 
 @Module({
   imports: [
@@ -24,6 +29,7 @@ import { MatchDatesModule } from './match-dates/match-dates.module';
       database: process.env.DB_NAME,
       autoLoadEntities: true,
       synchronize: false,
+      entities: [Players, Matches, MatchRecords, MatchDates, Expenses],
     }),
 
     PlayersModule,
