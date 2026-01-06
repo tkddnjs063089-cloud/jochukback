@@ -25,7 +25,11 @@ async function bootstrap() {
 
   // CORS 설정
   app.enableCors({
-    origin: ['http://localhost:3000', 'https://your-frontend.vercel.app'],
+    origin: [
+      'http://localhost:3000',
+      'http://localhost:3001',
+      'https://your-frontend.vercel.app',
+    ],
     credentials: true,
   });
 
@@ -46,7 +50,7 @@ async function bootstrap() {
   const document = SwaggerModule.createDocument(app, config);
   SwaggerModule.setup('api', app, document);
 
-  await app.listen(Number(process.env.PORT) || 3000);
+  await app.listen(Number(process.env.PORT) || 3001);
   console.log(`Application is running on: ${await app.getUrl()}`);
   console.log(`Swagger docs available at: ${await app.getUrl()}/api`);
 }
