@@ -23,30 +23,6 @@ import { MatchRecords } from './entities/match_record.entity';
 @Controller('match-records')
 export class MatchRecordsController {
   constructor(private readonly matchRecordsService: MatchRecordsService) {}
-  @Post()
-  @ApiOperation({
-    summary: '경기 기록 생성',
-    description: '경기 기록을 생성합니다.',
-  })
-  @ApiResponse({
-    status: 201,
-    description: '경기 기록이 성공적으로 생성되었습니다.',
-  })
-  @ApiBody({ type: CreateMatchRecordDto })
-  async create(
-    @Body() createMatchRecordDto: CreateMatchRecordDto,
-  ): Promise<string> {
-    return await this.matchRecordsService.create(createMatchRecordDto);
-  }
-  @Get()
-  @ApiOperation({
-    summary: '전체 경기 기록 조회',
-    description: '모든 경기 기록을 조회합니다.',
-  })
-  @ApiResponse({ status: 200, description: '경기 기록 목록 조회 성공' })
-  async findAll(): Promise<MatchRecords[]> {
-    return await this.matchRecordsService.findAll();
-  }
   @Get(':id')
   @ApiOperation({
     summary: '경기 기록 상세 조회',
