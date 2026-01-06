@@ -19,6 +19,15 @@ export class CreateMatchRecordDto {
   })
   @IsBoolean()
   @IsOptional({ message: '출석 여부는 선택 입력 항목입니다.' })
+  status: boolean = false;
+
+  @ApiPropertyOptional({
+    description: '출석 여부',
+    example: false,
+    default: false,
+  })
+  @IsBoolean()
+  @IsOptional({ message: '출석 여부는 선택 입력 항목입니다.' })
   attendance: boolean = false;
 
   @ApiPropertyOptional({ description: '골 수', example: 0, default: 0 })
