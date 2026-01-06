@@ -45,4 +45,13 @@ export class MatchRecords {
   @ManyToOne(() => Players, (players) => players.matchRecords)
   @JoinColumn([{ name: 'player_id', referencedColumnName: 'id' }])
   player: Players;
+
+  @Column('integer', { default: 0 })
+  wins: number = 0;
+
+  @Column('integer', { default: 0 })
+  draws: number = 0;
+
+  @Column('integer', { default: 0 })
+  losses: number = 0;
 }

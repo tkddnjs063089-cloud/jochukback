@@ -44,4 +44,31 @@ export class CreateMatchRecordDto {
   @IsBoolean()
   @IsOptional({ message: 'MOM 여부는 선택 입력 항목입니다.' })
   mom: boolean = false;
+
+  @ApiPropertyOptional({
+    description: '승리 수',
+    example: 0,
+    default: 0,
+  })
+  @IsNumber()
+  @IsOptional({ message: '승리 수는 선택 입력 항목입니다.' })
+  wins: number = 0;
+
+  @ApiPropertyOptional({
+    description: '무승부 수',
+    example: 0,
+    default: 0,
+  })
+  @IsNumber()
+  @IsOptional({ message: '무승부 수는 선택 입력 항목입니다.' })
+  draws: number = 0;
+
+  @ApiPropertyOptional({
+    description: '패배 수',
+    example: 0,
+    default: 0,
+  })
+  @IsNumber()
+  @IsOptional({ message: '패배 수는 선택 입력 항목입니다.' })
+  losses: number = 0;
 }
