@@ -69,17 +69,17 @@ export class PlayersController {
     return await this.playersService.update(id, updatePlayerDto);
   }
 
-  @Delete(':name')
+  @Delete(':id')
   @ApiOperation({
     summary: '선수 삭제',
     description: '이름으로 선수를 삭제합니다.',
   })
-  @ApiParam({ name: 'name', description: '선수 이름', example: '홍길동' })
+  @ApiParam({ name: 'id', description: '선수 ID', example: 1 })
   @ApiResponse({
     status: 200,
     description: '선수가 성공적으로 삭제되었습니다.',
   })
-  async remove(@Param('name') name: string): Promise<string> {
-    return await this.playersService.remove(name);
+  async remove(@Param('id') id: number): Promise<string> {
+    return await this.playersService.remove(id);
   }
 }

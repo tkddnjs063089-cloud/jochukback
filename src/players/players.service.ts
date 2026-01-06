@@ -38,12 +38,12 @@ export class PlayersService {
     await this.playersRepository.save(Object.assign(player, updatePlayerDto));
     return `${player.name} 선수가 수정되었습니다.`;
   }
-  async remove(name: string): Promise<string> {
-    const player = await this.playersRepository.findOne({ where: { name } });
+  async remove(id: number): Promise<string> {
+    const player = await this.playersRepository.findOne({ where: { id } });
     if (!player) {
       throw new NotFoundException('해당 선수를 찾을 수 없습니다.');
     }
-    await this.playersRepository.delete(player.id);
+    await this.playersRepository.remove(player);
     return `${player.name} 선수가 삭제되었습니다.`;
   }
 }
