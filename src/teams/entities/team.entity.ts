@@ -6,6 +6,7 @@ import {
   PrimaryGeneratedColumn,
 } from 'typeorm';
 import { Players } from 'src/players/entities/player.entity';
+import { MatchRecords } from 'src/match_records/entities/match_record.entity';
 
 @Index('teams_pkey', ['id'], { unique: true })
 @Entity('teams', { schema: 'public' })
@@ -25,4 +26,9 @@ export class Teams {
 
   @OneToMany(() => Players, (players) => players.team, { onDelete: 'CASCADE' })
   players: Players[];
+
+  @OneToMany(() => MatchRecords, (matchRecords) => matchRecords.team, {
+    onDelete: 'CASCADE',
+  })
+  matchRecords: MatchRecords[];
 }

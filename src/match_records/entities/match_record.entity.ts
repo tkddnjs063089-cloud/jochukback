@@ -9,6 +9,7 @@ import {
 } from 'typeorm';
 import { Matches } from '../../matches/entities/match.entity';
 import { Players } from '../../players/entities/player.entity';
+import { Teams } from 'src/teams/entities/team.entity';
 
 @Index('match_records_pkey', ['id'], { unique: true })
 @Index('unique_mom_per_match', ['matchId'], { unique: true })
@@ -20,10 +21,13 @@ export class MatchRecords {
   @PrimaryGeneratedColumn({ type: 'integer', name: 'id' })
   id: number;
 
-  @Column('integer', { name: 'match_id', unique: true })
+  @Column('integer', { name: 'match_id' })
   matchId: number;
 
-  @Column('integer', { name: 'player_id', unique: true })
+  @Column('integer', { name: 'team_id' })
+  teamId: number;
+
+  @Column('integer', { name: 'player_id' })
   playerId: number;
 
   @Column('boolean', { name: 'attendance', default: () => 'false' })
@@ -46,12 +50,9 @@ export class MatchRecords {
   @JoinColumn([{ name: 'player_id', referencedColumnName: 'id' }])
   player: Players;
 
-  @Column('integer', { default: 0 })
-  wins: number = 0;
-
-  @Column('integer', { default: 0 })
-  draws: number = 0;
-
-  @Column('integer', { default: 0 })
-  losses: number = 0;
+  @ManyToOne(() => Teams, (teams) => teams.matchRecords, {
+    onDelete: 'CASCADE',
+  })
+  @JoinColumn([{ name: 'team_id', referencedColumnName: 'id' }])
+  team: Teams;
 }

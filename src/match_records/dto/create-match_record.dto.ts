@@ -12,6 +12,11 @@ export class CreateMatchRecordDto {
   @IsNotEmpty({ message: '플레이어 ID는 필수 입력 항목입니다.' })
   playerId: number;
 
+  @ApiProperty({ description: '팀 ID', example: 1, required: true })
+  @IsNumber()
+  @IsNotEmpty({ message: '팀 ID는 필수 입력 항목입니다.' })
+  teamId: number;
+
   @ApiPropertyOptional({
     description: '출석 여부',
     example: false,

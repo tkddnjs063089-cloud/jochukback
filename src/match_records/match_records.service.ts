@@ -10,6 +10,7 @@ import { MatchRecords } from './entities/match_record.entity';
 import { InjectRepository } from '@nestjs/typeorm';
 import { MatchDates } from 'src/match-dates/entities/match-date.entity';
 import { Players } from 'src/players/entities/player.entity';
+import { Teams } from 'src/teams/entities/team.entity';
 
 @Injectable()
 export class MatchRecordsService {
@@ -20,6 +21,8 @@ export class MatchRecordsService {
     private readonly matchDatesRepository: Repository<MatchDates>,
     @InjectRepository(Players)
     private readonly playersRepository: Repository<Players>,
+    @InjectRepository(Teams)
+    private readonly teamsRepository: Repository<Teams>,
   ) {}
   async create(createMatchRecordDto: CreateMatchRecordDto): Promise<string> {
     const match = await this.matchDatesRepository.findOne({
@@ -34,13 +37,20 @@ export class MatchRecordsService {
     if (!player) {
       throw new NotFoundException('해당 선수를 찾을 수 없습니다.');
     }
+    const team = await this.teamsRepository.findOne({
+      where: { id: createMatchRecordDto.teamId },
+    });
+    if (!team) {
+      throw new NotFoundException('해당 팀을 찾을 수 없습니다.');
+    }
     const matchRecord = this.matchRecordsRepository.create({
       ...createMatchRecordDto,
       match,
       player,
+      team,
     });
     await this.matchRecordsRepository.save(matchRecord);
-    return `${match.id}번 경기 ${player.id}번 선수의 경기 기록이 생성되었습니다.`;
+    return `${match.id}번 경기 ${player.name} 선수(${team.teamName})의 경기 기록이 생성되었습니다.`;
   }
   async findAll(): Promise<MatchRecords[]> {
     return this.matchRecordsRepository.find();
