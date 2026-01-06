@@ -41,12 +41,12 @@ async function bootstrap() {
     .setDescription('조축 풋살 관리 시스템 API 문서')
     .setVersion('1.0')
     .addTag('players', '선수 관리')
+    .addTag('match-dates', '경기 일정 관리')
     .addTag('matches', '경기 관리')
     .addTag('match-records', '경기 기록 관리')
-    .addTag('match-dates', '경기 일정 관리')
-    .addTag('expenses', '경비 관리')
     .addTag('team-players', '팀 선수 관리')
     .addTag('teams', '팀 관리')
+    .addTag('expenses', '경비 관리')
     .addTag('membershipfees', '회비 관리')
     .build();
 
