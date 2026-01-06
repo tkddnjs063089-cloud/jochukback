@@ -30,7 +30,7 @@ async function bootstrap() {
       'http://localhost:3001',
       process.env.FRONTEND_URL,
     ].filter(Boolean),
-    methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
+    methods: ['GET', 'POST', 'PUT', 'PATCH', 'DELETE', 'OPTIONS'],
     credentials: true,
   });
 
