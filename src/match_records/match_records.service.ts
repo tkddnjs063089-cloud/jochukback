@@ -15,6 +15,15 @@ export class MatchRecordsService {
     @InjectRepository(MatchRecords)
     private readonly matchRecordsRepository: Repository<MatchRecords>,
   ) {}
+  async create(createMatchRecordDto: CreateMatchRecordDto): Promise<string> {
+    const matchRecord =
+      this.matchRecordsRepository.create(createMatchRecordDto);
+    await this.matchRecordsRepository.save(matchRecord);
+    return `${matchRecord.matchId}번 경기 ${matchRecord.playerId}번 선수의 경기 기록이 생성되었습니다.`;
+  }
+  async findAll(): Promise<MatchRecords[]> {
+    return this.matchRecordsRepository.find();
+  }
   async findOne(id: number): Promise<MatchRecords> {
     const matchRecord = await this.matchRecordsRepository.findOne({
       where: { id },
