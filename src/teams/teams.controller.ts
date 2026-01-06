@@ -24,7 +24,7 @@ export class TeamsController {
   @ApiResponse({ status: 201, description: '팀이 성공적으로 등록되었습니다.' })
   async create(
     @Body() createTeamDto: CreateTeamDto,
-  ): Promise<{ message: string; team: Teams }> {
+  ): Promise<{ message: string; teamId: number; team: Teams }> {
     return await this.teamsService.create(createTeamDto);
   }
   @Get()
