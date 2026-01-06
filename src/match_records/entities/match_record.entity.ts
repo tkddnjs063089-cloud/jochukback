@@ -26,8 +26,8 @@ export class MatchRecords {
   @Column('integer', { name: 'player_id', unique: true })
   playerId: number;
 
-  @Column('boolean', { name: 'status', default: () => 'false' })
-  status: boolean = false;
+  @Column('boolean', { name: 'attendance', default: () => 'false' })
+  attendance: boolean = false;
 
   @Column('integer', {
     name: 'clean_sheet',
