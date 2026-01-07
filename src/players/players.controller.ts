@@ -7,7 +7,13 @@ import {
   Param,
   Delete,
 } from '@nestjs/common';
-import { ApiTags, ApiOperation, ApiResponse, ApiParam } from '@nestjs/swagger';
+import {
+  ApiTags,
+  ApiOperation,
+  ApiResponse,
+  ApiParam,
+  ApiBody,
+} from '@nestjs/swagger';
 import { PlayersService } from './players.service';
 import { CreatePlayerDto } from './dto/create-player.dto';
 import { UpdatePlayerDto } from './dto/update-player.dto';
@@ -55,6 +61,16 @@ export class PlayersController {
   }
 
   @Patch(':id')
+  @ApiBody({
+    type: UpdatePlayerDto,
+    examples: {
+      홍길동: { value: { name: '홍길동' } },
+      이순신: { value: { name: '이순신' } },
+      강감찬: { value: { name: '강감찬' } },
+      을지문덕: { value: { name: '을지문덕' } },
+      이성계: { value: { name: '이성계' } },
+    },
+  })
   @ApiOperation({
     summary: '선수 정보 수정',
     description: '선수 정보를 수정합니다.',

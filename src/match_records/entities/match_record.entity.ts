@@ -4,10 +4,8 @@ import {
   Index,
   JoinColumn,
   ManyToOne,
-  OneToOne,
   PrimaryGeneratedColumn,
 } from 'typeorm';
-import { Matches } from '../../matches/entities/match.entity';
 import { Players } from '../../players/entities/player.entity';
 import { Teams } from 'src/teams/entities/team.entity';
 
@@ -26,18 +24,30 @@ export class MatchRecords {
   @Column('boolean', { name: 'attendance', default: () => 'false' })
   attendance: boolean = false;
 
+  @Column('integer', { name: 'goals', nullable: true, default: () => '0' })
+  goals: number = 0;
+
+  @Column('integer', { name: 'assists', nullable: true, default: () => '0' })
+  assists: number = 0;
+
   @Column('integer', {
     name: 'clean_sheet',
     nullable: true,
     default: () => '0',
   })
-  cleanSheet: number | null;
+  cleanSheet: number = 0;
 
-  @OneToOne(() => Matches, (matches) => matches.matchRecords, {
-    onDelete: 'CASCADE',
-  })
-  @JoinColumn([{ name: 'match_id', referencedColumnName: 'id' }])
-  match: Matches;
+  @Column('boolean', { name: 'mom', default: () => 'false' })
+  mom: boolean = false;
+
+  @Column('integer', { name: 'wins', nullable: true, default: () => '0' })
+  wins: number = 0;
+
+  @Column('integer', { name: 'draws', nullable: true, default: () => '0' })
+  draws: number = 0;
+
+  @Column('integer', { name: 'losses', nullable: true, default: () => '0' })
+  losses: number = 0;
 
   @ManyToOne(() => Players, (players) => players.matchRecords)
   @JoinColumn([{ name: 'player_id', referencedColumnName: 'id' }])

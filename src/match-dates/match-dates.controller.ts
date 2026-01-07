@@ -62,6 +62,10 @@ export class MatchDatesController {
   }
 
   @Patch(':id')
+  @ApiBody({
+    type: UpdateMatchDateDto,
+    examples: { '2026-01-05': { value: { matchDate: '2026-01-05' } } },
+  })
   @ApiOperation({
     summary: '경기 일정 수정',
     description: '경기 일정 정보를 수정합니다.',

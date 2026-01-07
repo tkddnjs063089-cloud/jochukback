@@ -1,15 +1,5 @@
 // matches.entity.ts
-import {
-  Column,
-  Entity,
-  Index,
-  JoinColumn,
-  ManyToOne,
-  OneToOne,
-  PrimaryGeneratedColumn,
-} from 'typeorm';
-import { MatchRecords } from '../../match_records/entities/match_record.entity';
-import { MatchDates } from '../../match-dates/entities/match-date.entity';
+import { Column, Entity, Index, PrimaryGeneratedColumn } from 'typeorm';
 
 @Index('matches_pkey', ['id'], { unique: true })
 @Entity('matches', { schema: 'public' })
@@ -29,8 +19,4 @@ export class Matches {
     default: () => 'now()',
   })
   createdAt: Date | null;
-
-  /** ✅ match_records 와의 1:1 관계 */
-  @OneToOne(() => MatchRecords, (record) => record.match)
-  matchRecords: MatchRecords;
 }

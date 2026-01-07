@@ -28,7 +28,19 @@ export class ExpensesController {
     summary: '지출 내역 등록',
     description: '지출 내역을 등록합니다.',
   })
-  @ApiBody({ type: CreateExpenseDto })
+  @ApiBody({
+    type: CreateExpenseDto,
+    examples: {
+      홍길동: {
+        value: {
+          playerId: 1,
+          expenseDate: '2026-01-05',
+          amount: 50000,
+          category: '식비',
+        },
+      },
+    },
+  })
   @ApiResponse({
     status: 201,
     description: '지출 내역이 성공적으로 등록되었습니다.',
@@ -60,7 +72,19 @@ export class ExpensesController {
     summary: '지출 내역 수정',
     description: 'ID로 특정 지출 내역을 수정합니다.',
   })
-  @ApiBody({ type: UpdateExpenseDto })
+  @ApiBody({
+    type: UpdateExpenseDto,
+    examples: {
+      홍길동: {
+        value: {
+          playerId: 1,
+          expenseDate: '2026-01-05',
+          amount: 50000,
+          category: '식비',
+        },
+      },
+    },
+  })
   @ApiResponse({ status: 200, description: '지출 내역 수정 성공' })
   async update(
     @Param('id') id: number,

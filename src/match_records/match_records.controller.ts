@@ -20,7 +20,7 @@ import { UpdateMatchRecordDto } from './dto/update-match_record.dto';
 import { MatchRecords } from './entities/match_record.entity';
 
 @ApiTags('match-records')
-@Controller('match-records')
+@Controller(['match-records', 'player-records'])
 export class MatchRecordsController {
   constructor(private readonly matchRecordsService: MatchRecordsService) {}
   @Post()
@@ -28,11 +28,16 @@ export class MatchRecordsController {
     summary: '경기 기록 생성',
     description: '새로운 경기 기록을 생성합니다.',
   })
-  @ApiBody({ type: CreateMatchRecordDto })
+  @ApiBody({
+    type: CreateMatchRecordDto,
+    examples: {
+      홍길동: { value: { playerId: 1, teamId: 1, attendance: true, goals: 1 } },
+    },
+  })
   @ApiResponse({ status: 201, description: '경기 기록 생성 성공' })
   async create(
     @Body() createMatchRecordDto: CreateMatchRecordDto,
-  ): Promise<string> {
+  ): Promise<{ message: string; id: number; record: MatchRecords }> {
     return await this.matchRecordsService.create(createMatchRecordDto);
   }
   @Get()
@@ -49,7 +54,12 @@ export class MatchRecordsController {
     summary: '경기 기록 수정',
     description: 'ID로 특정 경기 기록을 수정합니다.',
   })
-  @ApiBody({ type: UpdateMatchRecordDto })
+  @ApiBody({
+    type: UpdateMatchRecordDto,
+    examples: {
+      홍길동: { value: { playerId: 1, teamId: 1, matchDate: '2026-01-05' } },
+    },
+  })
   @ApiResponse({ status: 200, description: '경기 기록 수정 성공' })
   async update(
     @Param('id') id: number,
