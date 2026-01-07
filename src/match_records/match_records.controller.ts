@@ -31,7 +31,23 @@ export class MatchRecordsController {
   @ApiBody({
     type: CreateMatchRecordDto,
     examples: {
-      홍길동: { value: { playerId: 1, teamId: 1, attendance: true, goals: 1 } },
+      홍길동: {
+        value: {
+          playerId: 1,
+          teamId: 1,
+          attendance: true,
+          goals: 1,
+          assists: 1,
+          yellowCard: 1,
+          redCard: 1,
+          cleanSheet: 1,
+          mom: true,
+          dateId: 1,
+          wins: 1,
+          draws: 1,
+          losses: 1,
+        },
+      },
     },
   })
   @ApiResponse({ status: 201, description: '경기 기록 생성 성공' })
@@ -57,7 +73,23 @@ export class MatchRecordsController {
   @ApiBody({
     type: UpdateMatchRecordDto,
     examples: {
-      홍길동: { value: { playerId: 1, teamId: 1, matchDate: '2026-01-05' } },
+      홍길동: {
+        value: {
+          playerId: 1,
+          teamId: 1,
+          attendance: true,
+          goals: 1,
+          assists: 1,
+          yellowCard: 1,
+          redCard: 1,
+          cleanSheet: 1,
+          mom: true,
+          wins: 1,
+          draws: 1,
+          losses: 1,
+          dateId: 1,
+        },
+      },
     },
   })
   @ApiResponse({ status: 200, description: '경기 기록 수정 성공' })
