@@ -66,7 +66,7 @@ export class MatchRecordsService {
         goals,
         assists,
         cleanSheet: createMatchRecordDto.cleanSheet ?? 0,
-        mom: createMatchRecordDto.mom ?? false,
+        mom: createMatchRecordDto.mom ?? 0,
         wins: createMatchRecordDto.wins ?? 0,
         draws: createMatchRecordDto.draws ?? 0,
         losses: createMatchRecordDto.losses ?? 0,

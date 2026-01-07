@@ -41,8 +41,8 @@ export class MatchRecords {
   })
   cleanSheet: number = 0;
 
-  @Column('boolean', { name: 'mom', default: () => 'false' })
-  mom: boolean = false;
+  @Column('integer', { name: 'mom', nullable: true, default: () => '0' })
+  mom: number = 0;
 
   @Column('integer', { name: 'wins', nullable: true, default: () => '0' })
   wins: number = 0;

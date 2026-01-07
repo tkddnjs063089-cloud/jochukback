@@ -56,13 +56,13 @@ export class CreateMatchRecordDto {
   cleanSheet?: number = 0;
 
   @ApiPropertyOptional({
-    description: 'MOM 여부',
-    example: false,
-    default: false,
+    description: 'MOM',
+    example: 0,
+    default: 0,
   })
-  @IsBoolean()
+  @IsNumber()
   @IsOptional()
-  mom?: boolean = false;
+  mom?: number = 0;
 
   @ApiPropertyOptional({ description: '승리 수', example: 0, default: 0 })
   @IsNumber()
