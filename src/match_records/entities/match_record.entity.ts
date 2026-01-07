@@ -8,6 +8,7 @@ import {
 } from 'typeorm';
 import { Players } from '../../players/entities/player.entity';
 import { Teams } from 'src/teams/entities/team.entity';
+import { MatchDates } from 'src/match-dates/entities/match-date.entity';
 
 @Index('match_records_pkey', ['id'], { unique: true })
 @Entity('match_records', { schema: 'public' })
@@ -71,4 +72,11 @@ export class MatchRecords {
   })
   @JoinColumn([{ name: 'team_id', referencedColumnName: 'id' }])
   team: Teams;
+
+  // 경기 일정과의 관계 (여러 기록이 하나의 날짜 참조)
+  @ManyToOne(() => MatchDates, (matchDates) => matchDates.matchRecords, {
+    onDelete: 'CASCADE',
+  })
+  @JoinColumn([{ name: 'date_id', referencedColumnName: 'id' }])
+  matchDate: MatchDates;
 }

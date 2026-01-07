@@ -1,4 +1,11 @@
-import { Column, Entity, Index, PrimaryGeneratedColumn } from 'typeorm';
+import {
+  Column,
+  Entity,
+  Index,
+  OneToMany,
+  PrimaryGeneratedColumn,
+} from 'typeorm';
+import { MatchRecords } from '../../match_records/entities/match_record.entity';
 
 @Index('match_dates_event_date_key', ['eventDate'], { unique: true })
 @Index('match_dates_pkey', ['id'], { unique: true })
@@ -10,17 +17,14 @@ export class MatchDates {
   @Column('date', { name: 'event_date', unique: true })
   eventDate: string;
 
-  @Column('character varying', {
-    name: 'location',
+  @Column('timestamp without time zone', {
+    name: 'created_at',
     nullable: true,
-    length: 100,
+    default: () => 'now()',
   })
-  location: string | null;
+  createdAt: Date | null;
 
-  @Column('character varying', {
-    name: 'event_name',
-    nullable: true,
-    length: 100,
-  })
-  eventName: string | null;
+  // 한 날짜에 여러 경기 기록이 연결됨
+  @OneToMany(() => MatchRecords, (matchRecords) => matchRecords.matchDate)
+  matchRecords: MatchRecords[];
 }
