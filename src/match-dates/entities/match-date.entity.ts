@@ -14,8 +14,8 @@ export class MatchDates {
   @PrimaryGeneratedColumn({ type: 'integer', name: 'id' })
   id: number;
 
-  @Column('date', { name: 'event_date', unique: true })
-  eventDate: string;
+  @Column('timestamp without time zone', { name: 'event_date', unique: true })
+  eventDate: Date;
 
   @Column('timestamp without time zone', {
     name: 'created_at',
