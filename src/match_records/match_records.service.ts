@@ -45,11 +45,22 @@ export class MatchRecordsService {
     const assists =
       createMatchRecordDto.assist ?? createMatchRecordDto.assists ?? 0;
 
+    // 엔티티에 맞는 필드만 사용
     const matchRecord = this.matchRecordsRepository.create({
-      ...createMatchRecordDto,
+      playerId: createMatchRecordDto.playerId,
+      teamId: createMatchRecordDto.teamId ?? null,
+      dateId: createMatchRecordDto.dateId ?? null,
+      attendance: createMatchRecordDto.attendance ?? false,
+      goals,
+      assists,
+      cleanSheet: createMatchRecordDto.cleanSheet ?? 0,
+      mom: createMatchRecordDto.mom ?? false,
+      wins: createMatchRecordDto.wins ?? 0,
+      draws: createMatchRecordDto.draws ?? 0,
+      losses: createMatchRecordDto.losses ?? 0,
       player,
       team,
-    } as MatchRecords);
+    });
     await this.matchRecordsRepository.save(matchRecord);
     return {
       message: `${player.name} 선수의 경기 기록이 생성되었습니다.`,
