@@ -34,6 +34,15 @@ export class CreateMatchRecordDto {
   @IsOptional()
   attendance?: boolean = false;
 
+  @ApiPropertyOptional({
+    description: '지각 여부',
+    example: false,
+    default: false,
+  })
+  @IsBoolean()
+  @IsOptional()
+  late?: boolean = false;
+
   // 프론트엔드 호환: goal (단수)
   @ApiPropertyOptional({ description: '골 수 (프론트 호환)', example: 0 })
   @IsNumber()

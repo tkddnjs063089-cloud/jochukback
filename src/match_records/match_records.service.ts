@@ -75,6 +75,7 @@ export class MatchRecordsService {
         teamId: createMatchRecordDto.teamId ?? null,
         dateId: dateIdValue,
         attendance: createMatchRecordDto.attendance ?? false,
+        late: createMatchRecordDto.late ?? false,
         goals,
         assists,
         cleanSheet: createMatchRecordDto.cleanSheet ?? 0,

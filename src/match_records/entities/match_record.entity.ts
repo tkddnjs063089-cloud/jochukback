@@ -28,6 +28,9 @@ export class MatchRecords {
   @Column('boolean', { name: 'attendance', default: () => 'false' })
   attendance: boolean = false;
 
+  @Column('boolean', { name: 'late', default: () => 'false' })
+  late: boolean = false;
+
   @Column('integer', { name: 'goals', nullable: true, default: () => '0' })
   goals: number = 0;
 
