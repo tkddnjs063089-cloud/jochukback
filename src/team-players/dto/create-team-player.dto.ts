@@ -1,5 +1,10 @@
 import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger';
-import { IsNotEmpty, IsNumber, IsOptional } from 'class-validator';
+import {
+  IsDateString,
+  IsNotEmpty,
+  IsNumber,
+  IsOptional,
+} from 'class-validator';
 
 export class CreateTeamPlayerDto {
   @ApiProperty({ description: '팀 ID', example: 1 })
@@ -13,11 +18,10 @@ export class CreateTeamPlayerDto {
   playerId: number;
 
   @ApiPropertyOptional({
-    description: '팀 합류 일시 (Unix timestamp 밀리초)',
-    example: 1735862400000,
+    description: '팀 합류 일시',
+    example: '2026-01-05T09:00:00.000Z',
   })
-  @IsNumber()
+  @IsDateString()
   @IsOptional()
-  joinedAt?: number;
+  joinedAt?: string;
 }
-
