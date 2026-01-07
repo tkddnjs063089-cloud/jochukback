@@ -61,7 +61,7 @@ export class TeamPlayersService {
     const teamPlayer = this.teamPlayersRepository.create({
       teamId: createTeamPlayerDto.teamId,
       playerId: createTeamPlayerDto.playerId,
-      joinedAt: createTeamPlayerDto.joinedAt ?? Date.now(),
+      joinedAt: createTeamPlayerDto.joinedAt ?? new Date().toISOString(),
     });
 
     await this.teamPlayersRepository.save(teamPlayer);
@@ -138,4 +138,3 @@ export class TeamPlayersService {
     return { message: '팀-선수 관계가 삭제되었습니다.' };
   }
 }
-
