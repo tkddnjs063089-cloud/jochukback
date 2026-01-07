@@ -28,14 +28,37 @@ export class MatchRecordsService {
     if (!player) {
       throw new NotFoundException('해당 선수를 찾을 수 없습니다.');
     }
-    const team = await this.teamsRepository.findOne({
-      where: { id: createMatchRecordDto.teamId },
-    });
-    if (!team) {
-      throw new NotFoundException('해당 팀을 찾을 수 없습니다.');
+
+    // teamId가 있으면 팀 조회
+    let team: Teams | undefined = undefined;
+    if (createMatchRecordDto.teamId) {
+      const foundTeam = await this.teamsRepository.findOne({
+        where: { id: createMatchRecordDto.teamId },
+      });
+      if (foundTeam) {
+        team = foundTeam;
+      }
     }
+
+    // 프론트 호환: goal → goals, assist → assists 매핑
+    const goals = createMatchRecordDto.goal ?? createMatchRecordDto.goals ?? 0;
+    const assists =
+      createMatchRecordDto.assist ?? createMatchRecordDto.assists ?? 0;
+
     const matchRecord = this.matchRecordsRepository.create({
-      ...createMatchRecordDto,
+      playerId: createMatchRecordDto.playerId,
+      teamId: createMatchRecordDto.teamId,
+      dateId: createMatchRecordDto.dateId,
+      attendance: createMatchRecordDto.attendance ?? false,
+      goals,
+      assists,
+      yellowCard: createMatchRecordDto.yellowCard ?? 0,
+      redCard: createMatchRecordDto.redCard ?? 0,
+      cleanSheet: createMatchRecordDto.cleanSheet ?? 0,
+      mom: createMatchRecordDto.mom ?? false,
+      wins: createMatchRecordDto.wins ?? 0,
+      draws: createMatchRecordDto.draws ?? 0,
+      losses: createMatchRecordDto.losses ?? 0,
       player,
       team,
     });

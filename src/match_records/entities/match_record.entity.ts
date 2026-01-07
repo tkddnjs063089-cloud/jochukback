@@ -15,11 +15,14 @@ export class MatchRecords {
   @PrimaryGeneratedColumn({ type: 'integer', name: 'id' })
   id: number;
 
-  @Column('integer', { name: 'team_id' })
-  teamId: number;
+  @Column('integer', { name: 'team_id', nullable: true })
+  teamId: number | null;
 
   @Column('integer', { name: 'player_id' })
   playerId: number;
+
+  @Column('integer', { name: 'date_id', nullable: true })
+  dateId: number | null;
 
   @Column('boolean', { name: 'attendance', default: () => 'false' })
   attendance: boolean = false;
@@ -29,6 +32,16 @@ export class MatchRecords {
 
   @Column('integer', { name: 'assists', nullable: true, default: () => '0' })
   assists: number = 0;
+
+  @Column('integer', {
+    name: 'yellow_card',
+    nullable: true,
+    default: () => '0',
+  })
+  yellowCard: number = 0;
+
+  @Column('integer', { name: 'red_card', nullable: true, default: () => '0' })
+  redCard: number = 0;
 
   @Column('integer', {
     name: 'clean_sheet',
