@@ -1,11 +1,4 @@
-import {
-  Column,
-  Entity,
-  Index,
-  OneToMany,
-  PrimaryGeneratedColumn,
-} from 'typeorm';
-import { MatchRecords } from '../../match_records/entities/match_record.entity';
+import { Column, Entity, Index, PrimaryGeneratedColumn } from 'typeorm';
 
 @Index('match_dates_event_date_key', ['eventDate'], { unique: true })
 @Index('match_dates_pkey', ['id'], { unique: true })
@@ -23,8 +16,4 @@ export class MatchDates {
     default: () => 'now()',
   })
   createdAt: Date | null;
-
-  // 한 날짜에 여러 경기 기록이 연결됨
-  @OneToMany(() => MatchRecords, (matchRecords) => matchRecords.matchDate)
-  matchRecords: MatchRecords[];
 }

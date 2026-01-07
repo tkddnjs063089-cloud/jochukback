@@ -58,10 +58,22 @@ export class TeamPlayersService {
       throw new ConflictException('해당 선수는 이미 이 팀에 속해 있습니다.');
     }
 
+    // joinedAt 변환: 숫자(ms timestamp)면 ISO string으로 변환
+    let joinedAtValue: string;
+    if (createTeamPlayerDto.joinedAt == null) {
+      joinedAtValue = new Date().toISOString();
+    } else if (typeof createTeamPlayerDto.joinedAt === 'number') {
+      // ms timestamp → ISO string
+      joinedAtValue = new Date(createTeamPlayerDto.joinedAt).toISOString();
+    } else {
+      // 이미 string이면 그대로 사용
+      joinedAtValue = createTeamPlayerDto.joinedAt;
+    }
+
     const teamPlayer = this.teamPlayersRepository.create({
       teamId: createTeamPlayerDto.teamId,
       playerId: createTeamPlayerDto.playerId,
-      joinedAt: createTeamPlayerDto.joinedAt ?? new Date().toISOString(),
+      joinedAt: joinedAtValue,
     });
 
     await this.teamPlayersRepository.save(teamPlayer);
@@ -115,8 +127,15 @@ export class TeamPlayersService {
       throw new NotFoundException('해당 팀-선수 관계를 찾을 수 없습니다.');
     }
 
-    if (updateTeamPlayerDto.joinedAt) {
-      teamPlayer.joinedAt = updateTeamPlayerDto.joinedAt;
+    if (updateTeamPlayerDto.joinedAt != null) {
+      // joinedAt 변환: 숫자(ms timestamp)면 ISO string으로 변환
+      if (typeof updateTeamPlayerDto.joinedAt === 'number') {
+        teamPlayer.joinedAt = new Date(
+          updateTeamPlayerDto.joinedAt,
+        ).toISOString();
+      } else {
+        teamPlayer.joinedAt = updateTeamPlayerDto.joinedAt;
+      }
     }
 
     await this.teamPlayersRepository.save(teamPlayer);

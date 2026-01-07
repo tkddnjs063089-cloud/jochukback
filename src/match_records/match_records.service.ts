@@ -57,11 +57,23 @@ export class MatchRecordsService {
       const assists =
         createMatchRecordDto.assist ?? createMatchRecordDto.assists ?? 0;
 
+      // dateId 변환: 숫자(ms timestamp)면 ISO string으로 변환
+      let dateIdValue: string | null = null;
+      if (createMatchRecordDto.dateId != null) {
+        if (typeof createMatchRecordDto.dateId === 'number') {
+          // ms timestamp → ISO string
+          dateIdValue = new Date(createMatchRecordDto.dateId).toISOString();
+        } else {
+          // 이미 string이면 그대로 사용
+          dateIdValue = createMatchRecordDto.dateId;
+        }
+      }
+
       // 엔티티에 맞는 필드만 사용
       const matchRecord = this.matchRecordsRepository.create({
         playerId: createMatchRecordDto.playerId,
         teamId: createMatchRecordDto.teamId ?? null,
-        dateId: createMatchRecordDto.dateId ?? null,
+        dateId: dateIdValue,
         attendance: createMatchRecordDto.attendance ?? false,
         goals,
         assists,

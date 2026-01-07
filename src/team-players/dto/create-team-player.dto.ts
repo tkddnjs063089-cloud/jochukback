@@ -1,10 +1,5 @@
 import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger';
-import {
-  IsDateString,
-  IsNotEmpty,
-  IsNumber,
-  IsOptional,
-} from 'class-validator';
+import { IsNotEmpty, IsNumber, IsOptional } from 'class-validator';
 
 export class CreateTeamPlayerDto {
   @ApiProperty({ description: '팀 ID', example: 1 })
@@ -18,10 +13,9 @@ export class CreateTeamPlayerDto {
   playerId: number;
 
   @ApiPropertyOptional({
-    description: '팀 합류 일시',
-    example: '2026-01-05T09:00:00.000Z',
+    description: '팀 합류 일시 (ISO 문자열 또는 ms timestamp)',
+    example: 1767366000000,
   })
-  @IsDateString()
   @IsOptional()
-  joinedAt?: string;
+  joinedAt?: string | number; // 프론트에서 숫자(ms)로 보내므로 둘 다 허용
 }

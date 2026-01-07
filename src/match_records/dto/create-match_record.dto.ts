@@ -1,4 +1,10 @@
-import { IsNumber, IsBoolean, IsOptional, IsNotEmpty } from 'class-validator';
+import {
+  IsNumber,
+  IsBoolean,
+  IsOptional,
+  IsNotEmpty,
+  IsDateString,
+} from 'class-validator';
 import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger';
 
 export class CreateMatchRecordDto {
@@ -12,10 +18,12 @@ export class CreateMatchRecordDto {
   @IsOptional()
   teamId?: number;
 
-  @ApiPropertyOptional({ description: '경기 일정 ID', example: 1 })
-  @IsNumber()
+  @ApiPropertyOptional({
+    description: '경기 날짜 (ISO 문자열 또는 타임스탬프)',
+    example: '2026-01-05T09:00:00.000Z',
+  })
   @IsOptional()
-  dateId?: number;
+  dateId?: string | number; // 프론트에서 timestamp(숫자) 또는 ISO string 둘 다 허용
 
   @ApiPropertyOptional({
     description: '출석 여부',
