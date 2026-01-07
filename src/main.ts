@@ -47,6 +47,7 @@ async function bootstrap() {
     .addTag('teams', '팀 관리')
     .addTag('expenses', '경비 관리')
     .addTag('membershipfees', '회비 관리')
+    .addTag('team-players', '팀 선수 관리')
     .build();
 
   const document = SwaggerModule.createDocument(app, config);
