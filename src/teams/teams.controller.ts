@@ -20,7 +20,12 @@ export class TeamsController {
   constructor(private readonly teamsService: TeamsService) {}
   @Post()
   @ApiOperation({ summary: '팀 등록', description: '새로운 팀을 등록합니다.' })
-  @ApiBody({ type: CreateTeamDto })
+  @ApiBody({
+    type: CreateTeamDto,
+    examples: {
+      홍길동: { value: { teamName: '홍길동' } },
+    },
+  })
   @ApiResponse({ status: 201, description: '팀이 성공적으로 등록되었습니다.' })
   async create(@Body() createTeamDto: CreateTeamDto): Promise<{
     message: string;
@@ -52,6 +57,12 @@ export class TeamsController {
   }
 
   @Patch(':id')
+  @ApiBody({
+    type: UpdateTeamDto,
+    examples: {
+      홍길동: { value: { teamName: '홍길동' } },
+    },
+  })
   @ApiOperation({ summary: '팀 수정', description: '특정 팀을 수정합니다.' })
   @ApiParam({ name: 'id', description: '팀 ID', example: 1 })
   @ApiResponse({ status: 200, description: '팀 수정 성공' })

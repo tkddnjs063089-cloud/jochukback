@@ -7,7 +7,13 @@ import {
   Param,
   Delete,
 } from '@nestjs/common';
-import { ApiTags, ApiOperation, ApiResponse, ApiParam } from '@nestjs/swagger';
+import {
+  ApiTags,
+  ApiOperation,
+  ApiResponse,
+  ApiParam,
+  ApiBody,
+} from '@nestjs/swagger';
 import { MatchesService } from './matches.service';
 import { CreateMatchDto } from './dto/create-match.dto';
 import { UpdateMatchDto } from './dto/update-match.dto';
@@ -87,6 +93,12 @@ export class MatchesController {
   }
 
   @Patch(':id')
+  @ApiBody({
+    type: UpdateMatchDto,
+    examples: {
+      '2026-01-05': { value: { matchDate: '2026-01-05', matchOrder: 1 } },
+    },
+  })
   @ApiOperation({
     summary: '경기 정보 수정',
     description: '경기 정보를 수정합니다.',

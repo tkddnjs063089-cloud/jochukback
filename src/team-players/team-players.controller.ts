@@ -14,6 +14,7 @@ import {
   ApiResponse,
   ApiParam,
   ApiQuery,
+  ApiBody,
 } from '@nestjs/swagger';
 import { TeamPlayersService } from './team-players.service';
 import { CreateTeamPlayerDto } from './dto/create-team-player.dto';
@@ -26,6 +27,12 @@ export class TeamPlayersController {
   constructor(private readonly teamPlayersService: TeamPlayersService) {}
 
   @Post()
+  @ApiBody({
+    type: CreateTeamPlayerDto,
+    examples: {
+      홍길동: { value: { teamId: 1, playerId: 1 } },
+    },
+  })
   @ApiOperation({
     summary: '팀-선수 관계 생성',
     description: '선수를 팀에 추가합니다.',
@@ -88,6 +95,12 @@ export class TeamPlayersController {
   }
 
   @Patch(':id')
+  @ApiBody({
+    type: UpdateTeamPlayerDto,
+    examples: {
+      홍길동: { value: { teamId: 1, playerId: 1 } },
+    },
+  })
   @ApiOperation({
     summary: '팀-선수 관계 수정',
     description: '특정 팀-선수 관계를 수정합니다.',
@@ -112,4 +125,3 @@ export class TeamPlayersController {
     return await this.teamPlayersService.remove(id);
   }
 }
-
