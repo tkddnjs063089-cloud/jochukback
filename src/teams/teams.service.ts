@@ -17,7 +17,12 @@ export class TeamsService {
 
   async create(
     createTeamDto: CreateTeamDto,
-  ): Promise<{ message: string; teamId: number }> {
+  ): Promise<{
+    message: string;
+    id: number;
+    teamId: number;
+    teamName: string;
+  }> {
     // 팀 생성
     const team = this.teamsRepository.create({
       teamName: createTeamDto.teamName,
@@ -34,7 +39,9 @@ export class TeamsService {
 
     return {
       message: `${team.teamName} 팀이 생성되었습니다.`,
+      id: team.id,
       teamId: team.id,
+      teamName: team.teamName,
     };
   }
 
