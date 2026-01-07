@@ -46,22 +46,10 @@ export class MatchRecordsService {
       createMatchRecordDto.assist ?? createMatchRecordDto.assists ?? 0;
 
     const matchRecord = this.matchRecordsRepository.create({
-      playerId: createMatchRecordDto.playerId,
-      teamId: createMatchRecordDto.teamId,
-      dateId: createMatchRecordDto.dateId,
-      attendance: createMatchRecordDto.attendance ?? false,
-      goals,
-      assists,
-      yellowCard: createMatchRecordDto.yellowCard ?? 0,
-      redCard: createMatchRecordDto.redCard ?? 0,
-      cleanSheet: createMatchRecordDto.cleanSheet ?? 0,
-      mom: createMatchRecordDto.mom ?? false,
-      wins: createMatchRecordDto.wins ?? 0,
-      draws: createMatchRecordDto.draws ?? 0,
-      losses: createMatchRecordDto.losses ?? 0,
+      ...createMatchRecordDto,
       player,
       team,
-    });
+    } as MatchRecords);
     await this.matchRecordsRepository.save(matchRecord);
     return {
       message: `${player.name} 선수의 경기 기록이 생성되었습니다.`,

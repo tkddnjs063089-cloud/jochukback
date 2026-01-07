@@ -35,16 +35,6 @@ export class MatchRecords {
   assists: number = 0;
 
   @Column('integer', {
-    name: 'yellow_card',
-    nullable: true,
-    default: () => '0',
-  })
-  yellowCard: number = 0;
-
-  @Column('integer', { name: 'red_card', nullable: true, default: () => '0' })
-  redCard: number = 0;
-
-  @Column('integer', {
     name: 'clean_sheet',
     nullable: true,
     default: () => '0',

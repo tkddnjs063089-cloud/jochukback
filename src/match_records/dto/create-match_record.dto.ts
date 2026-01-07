@@ -50,16 +50,6 @@ export class CreateMatchRecordDto {
   @IsOptional()
   assists?: number = 0;
 
-  @ApiPropertyOptional({ description: '옐로카드 수', example: 0, default: 0 })
-  @IsNumber()
-  @IsOptional()
-  yellowCard?: number = 0;
-
-  @ApiPropertyOptional({ description: '레드카드 수', example: 0, default: 0 })
-  @IsNumber()
-  @IsOptional()
-  redCard?: number = 0;
-
   @ApiPropertyOptional({ description: '클린시트 수', example: 0, default: 0 })
   @IsNumber()
   @IsOptional()
