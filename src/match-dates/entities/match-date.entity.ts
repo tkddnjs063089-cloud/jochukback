@@ -1,11 +1,4 @@
-import {
-  Column,
-  Entity,
-  Index,
-  OneToMany,
-  PrimaryGeneratedColumn,
-} from 'typeorm';
-import { Matches } from '../../matches/entities/match.entity';
+import { Column, Entity, Index, PrimaryGeneratedColumn } from 'typeorm';
 
 @Index('match_dates_event_date_key', ['eventDate'], { unique: true })
 @Index('match_dates_pkey', ['id'], { unique: true })
@@ -30,7 +23,4 @@ export class MatchDates {
     length: 100,
   })
   eventName: string | null;
-
-  @OneToMany(() => Matches, (matches) => matches.matchDateInfo)
-  matches: Matches[];
 }

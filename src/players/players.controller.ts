@@ -27,7 +27,9 @@ export class PlayersController {
     status: 201,
     description: '선수가 성공적으로 등록되었습니다.',
   })
-  async create(@Body() createPlayerDto: CreatePlayerDto): Promise<string> {
+  async create(
+    @Body() createPlayerDto: CreatePlayerDto,
+  ): Promise<{ message: string }> {
     return await this.playersService.create(createPlayerDto);
   }
 

@@ -14,14 +14,4 @@ export class CreateTeamDto {
   @IsNotEmpty({ message: '팀 이름은 필수 입력 항목입니다.' })
   @MaxLength(255, { message: '팀 이름은 최대 255자 이하여야 합니다.' })
   teamName: string;
-
-  @ApiPropertyOptional({
-    description: '팀 소속 선수 ID 배열',
-    example: [1, 2, 3],
-    type: [Number],
-  })
-  @IsArray()
-  @IsNumber({}, { each: true })
-  @IsOptional()
-  playerIds?: number[];
 }

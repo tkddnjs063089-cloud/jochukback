@@ -22,7 +22,6 @@ export class MatchesService {
         where: {
           matchDate: createMatchDto.matchDate,
           matchOrder: createMatchDto.matchOrder,
-          teamType: createMatchDto.teamType,
         },
       })
     ) {
@@ -56,15 +55,14 @@ export class MatchesService {
   async findByDateAndOrder(
     matchDate: string,
     matchOrder: number,
-    teamType: 'PINK' | 'BLACK',
   ): Promise<Matches> {
     const match = await this.matchesRepository.findOne({
-      where: { matchDate, matchOrder, teamType: teamType as 'PINK' | 'BLACK' },
+      where: { matchDate, matchOrder },
     });
 
     if (!match) {
       throw new NotFoundException(
-        `${matchDate} ${matchOrder}경기 ${teamType}팀을 찾을 수 없습니다.`,
+        `${matchDate} ${matchOrder}경기를 찾을 수 없습니다.`,
       );
     }
     return match;
@@ -79,7 +77,6 @@ export class MatchesService {
         where: {
           matchDate: updateMatchDto.matchDate,
           matchOrder: updateMatchDto.matchOrder,
-          teamType: updateMatchDto.teamType,
         },
       })
     ) {
@@ -88,7 +85,7 @@ export class MatchesService {
       );
     }
     await this.matchesRepository.save(Object.assign(match, updateMatchDto));
-    return `${match.matchDate}일 ${match.matchOrder}번째 경기 ${match.teamType}팀 경기가 수정되었습니다.`;
+    return `${match.matchDate}일 ${match.matchOrder}번째 경기가 수정되었습니다.`;
   }
   async remove(id: number): Promise<string> {
     const match = await this.matchesRepository.findOne({ where: { id } });
@@ -96,6 +93,6 @@ export class MatchesService {
       throw new NotFoundException('해당 경기를 찾을 수 없습니다.');
     }
     await this.matchesRepository.remove(match);
-    return `${match.matchDate}일 ${match.matchOrder}번째 경기 ${match.teamType}팀 경기가 삭제되었습니다.`;
+    return `${match.matchDate}일 ${match.matchOrder}번째 경기가 삭제되었습니다.`;
   }
 }

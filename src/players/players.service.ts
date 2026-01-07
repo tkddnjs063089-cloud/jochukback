@@ -15,10 +15,12 @@ export class PlayersService {
     @InjectRepository(Players)
     private readonly playersRepository: Repository<Players>,
   ) {}
-  async create(createPlayerDto: CreatePlayerDto): Promise<string> {
-    const player = this.playersRepository.create(createPlayerDto);
+  async create(createPlayerDto: CreatePlayerDto): Promise<{ message: string }> {
+    const player = this.playersRepository.create({
+      name: createPlayerDto.name,
+    });
     await this.playersRepository.save(player);
-    return `${player.name} 선수가 생성되었습니다.`;
+    return { message: `${player.name} 선수가 생성되었습니다.` };
   }
   async findAll(): Promise<Players[]> {
     return this.playersRepository.find();

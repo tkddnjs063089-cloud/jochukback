@@ -12,17 +12,10 @@ import { Players } from '../../players/entities/player.entity';
 import { Teams } from 'src/teams/entities/team.entity';
 
 @Index('match_records_pkey', ['id'], { unique: true })
-@Index('unique_mom_per_match', ['matchId'], { unique: true })
-@Index('match_records_match_id_player_id_key', ['matchId', 'playerId'], {
-  unique: true,
-})
 @Entity('match_records', { schema: 'public' })
 export class MatchRecords {
   @PrimaryGeneratedColumn({ type: 'integer', name: 'id' })
   id: number;
-
-  @Column('integer', { name: 'match_id' })
-  matchId: number;
 
   @Column('integer', { name: 'team_id' })
   teamId: number;

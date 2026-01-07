@@ -17,7 +17,7 @@ export class TeamsService {
 
   async create(
     createTeamDto: CreateTeamDto,
-  ): Promise<{ message: string; teamId: number; team: Teams }> {
+  ): Promise<{ message: string; teamId: number }> {
     // 팀 생성
     const team = this.teamsRepository.create({
       teamName: createTeamDto.teamName,
@@ -25,28 +25,26 @@ export class TeamsService {
     await this.teamsRepository.save(team);
 
     // 선수들을 팀에 배정
-    if (createTeamDto.playerIds && createTeamDto.playerIds.length > 0) {
-      await this.playersRepository.update(
-        { id: In(createTeamDto.playerIds) },
-        { team: team },
-      );
-    }
+    // if (createTeamDto.playerIds && createTeamDto.playerIds.length > 0) {
+    //   await this.playersRepository.update(
+    //     { id: In(createTeamDto.playerIds) },
+    //     { team: team },
+    //   );
+    // }
 
     return {
       message: `${team.teamName} 팀이 생성되었습니다.`,
       teamId: team.id,
-      team,
     };
   }
 
   async findAll(): Promise<Teams[]> {
-    return this.teamsRepository.find({ relations: ['players'] });
+    return this.teamsRepository.find();
   }
 
   async findOne(id: number): Promise<Teams> {
     const team = await this.teamsRepository.findOne({
       where: { id },
-      relations: ['players'],
     });
     if (!team) {
       throw new NotFoundException('해당 팀을 찾을 수 없습니다.');
@@ -70,22 +68,22 @@ export class TeamsService {
     }
 
     // 선수 목록 업데이트
-    if (updateTeamDto.playerIds) {
-      // 기존 선수들의 팀 연결 해제
-      await this.playersRepository
-        .createQueryBuilder()
-        .update()
-        .set({ team: () => 'NULL' })
-        .where('team_id = :teamId', { teamId: id })
-        .execute();
-      // 새 선수들 팀에 배정
-      if (updateTeamDto.playerIds.length > 0) {
-        await this.playersRepository.update(
-          { id: In(updateTeamDto.playerIds) },
-          { team: team },
-        );
-      }
-    }
+    // if (updateTeamDto.playerIds) {
+    //   // 기존 선수들의 팀 연결 해제
+    //   await this.playersRepository
+    //     .createQueryBuilder()
+    //     .update()
+    //     .set({ team: () => 'NULL' })
+    //     .where('team_id = :teamId', { teamId: id })
+    //     .execute();
+    //   // 새 선수들 팀에 배정
+    //   if (updateTeamDto.playerIds.length > 0) {
+    //     await this.playersRepository.update(
+    //       { id: In(updateTeamDto.playerIds) },
+    //       { team: team },
+    //     );
+    //   }
+    // }
 
     return { message: `${team.teamName} 팀이 수정되었습니다.`, team };
   }

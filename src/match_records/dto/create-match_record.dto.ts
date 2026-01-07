@@ -2,11 +2,6 @@ import { IsNumber, IsBoolean, IsOptional, IsNotEmpty } from 'class-validator';
 import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger';
 
 export class CreateMatchRecordDto {
-  @ApiProperty({ description: '경기 ID', example: 1 })
-  @IsNumber()
-  @IsNotEmpty({ message: '경기 ID는 필수 입력 항목입니다.' })
-  matchId: number;
-
   @ApiProperty({ description: '선수 ID', example: 1 })
   @IsNumber()
   @IsNotEmpty({ message: '플레이어 ID는 필수 입력 항목입니다.' })
