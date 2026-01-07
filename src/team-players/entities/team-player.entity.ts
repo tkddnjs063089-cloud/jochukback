@@ -24,12 +24,11 @@ export class TeamPlayers {
   @Column('integer', { name: 'player_id' })
   playerId: number;
 
-  @Column('timestamp without time zone', {
+  @Column('bigint', {
     name: 'joined_at',
     nullable: true,
-    default: () => 'now()',
   })
-  joinedAt: Date | null;
+  joinedAt: number | null;
 
   @ManyToOne(() => Teams, (teams) => teams.teamPlayers, { onDelete: 'CASCADE' })
   @JoinColumn([{ name: 'team_id', referencedColumnName: 'id' }])

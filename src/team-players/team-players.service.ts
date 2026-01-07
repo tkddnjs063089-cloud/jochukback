@@ -61,9 +61,7 @@ export class TeamPlayersService {
     const teamPlayer = this.teamPlayersRepository.create({
       teamId: createTeamPlayerDto.teamId,
       playerId: createTeamPlayerDto.playerId,
-      joinedAt: createTeamPlayerDto.joinedAt
-        ? new Date(createTeamPlayerDto.joinedAt)
-        : new Date(),
+      joinedAt: createTeamPlayerDto.joinedAt ?? Date.now(),
     });
 
     await this.teamPlayersRepository.save(teamPlayer);
@@ -118,7 +116,7 @@ export class TeamPlayersService {
     }
 
     if (updateTeamPlayerDto.joinedAt) {
-      teamPlayer.joinedAt = new Date(updateTeamPlayerDto.joinedAt);
+      teamPlayer.joinedAt = updateTeamPlayerDto.joinedAt;
     }
 
     await this.teamPlayersRepository.save(teamPlayer);
