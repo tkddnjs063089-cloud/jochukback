@@ -26,11 +26,11 @@ export class MatchesService {
       })
     ) {
       throw new BadRequestException(
-        `${createMatchDto.matchDate}일 ${createMatchDto.matchOrder}번째 경기 ${createMatchDto.teamType}팀 경기는 이미 존재합니다.`,
+        `${createMatchDto.matchDate}일 ${createMatchDto.matchOrder}번째 경기 ${createMatchDto.teamId}팀 경기는 이미 존재합니다.`,
       );
     }
     await this.matchesRepository.save(match);
-    return `${createMatchDto.matchDate}일 ${createMatchDto.matchOrder}번째 경기 ${createMatchDto.teamType}팀 경기가 생성되었습니다.`;
+    return `${createMatchDto.matchDate}일 ${createMatchDto.matchOrder}번째 경기 ${createMatchDto.teamId}팀 경기가 생성되었습니다.`;
   }
   async findAll(): Promise<Matches[]> {
     return this.matchesRepository.find();
