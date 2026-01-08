@@ -1,5 +1,13 @@
 // matches.entity.ts
-import { Column, Entity, Index, PrimaryGeneratedColumn } from 'typeorm';
+import { Teams } from 'src/teams/entities/team.entity';
+import {
+  Column,
+  Entity,
+  Index,
+  JoinColumn,
+  ManyToOne,
+  PrimaryGeneratedColumn,
+} from 'typeorm';
 
 @Index('matches_pkey', ['id'], { unique: true })
 @Entity('matches', { schema: 'public' })
@@ -19,4 +27,8 @@ export class Matches {
     default: () => 'now()',
   })
   createdAt: Date | null;
+
+  @ManyToOne(() => Teams, (teams) => teams.matches)
+  @JoinColumn([{ name: 'team_id', referencedColumnName: 'id' }])
+  team: Teams;
 }

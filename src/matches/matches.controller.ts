@@ -29,6 +29,7 @@ export class MatchesController {
     summary: '경기 등록',
     description: '새로운 경기를 등록합니다.',
   })
+  @ApiBody({ type: CreateMatchDto })
   @ApiResponse({
     status: 201,
     description: '경기가 성공적으로 등록되었습니다.',
