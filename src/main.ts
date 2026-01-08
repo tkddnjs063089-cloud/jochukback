@@ -10,9 +10,9 @@ async function bootstrap() {
   // ValidationPipe 설정
   app.useGlobalPipes(
     new ValidationPipe({
-      whitelist: true,
-      transform: true,
-      forbidNonWhitelisted: true,
+      whitelist: true, // DTO에 정의된 필드만 허용 (나머지는 자동 제거)
+      transform: true, // 타입 자동 변환
+      // forbidNonWhitelisted: true, // 제거: 불필요한 필드가 와도 에러 대신 무시
     }),
   );
 
