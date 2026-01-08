@@ -171,26 +171,26 @@ export class MatchRecordsService {
     }
   }
 
-  async findOne(id: number): Promise<MatchRecords> {
+  async findByDateId(dateId: string): Promise<MatchRecords[]> {
     try {
-      if (!id || isNaN(id)) {
+      if (!dateId) {
         throw new BadRequestException(
-          '[프론트엔드 문제] 유효한 경기 기록 ID가 필요합니다.',
+          '[프론트엔드 문제] 유효한 경기 기록 dateId가 필요합니다.',
         );
       }
 
       const matchRecord = await this.matchRecordsRepository.findOne({
-        where: { id },
+        where: { dateId },
         relations: ['player', 'team'],
       });
       if (!matchRecord) {
         throw new NotFoundException(
-          `[프론트엔드 문제] ID가 ${id}인 경기 기록을 찾을 수 없습니다.`,
+          `[프론트엔드 문제] dateId가 ${dateId}인 경기 기록을 찾을 수 없습니다.`,
         );
       }
-      return matchRecord;
+      return [matchRecord];
     } catch (error) {
-      console.error('[MatchRecordsService.findOne] 에러:', error);
+      console.error('[MatchRecordsService.findByDateId] 에러:', error);
 
       if (
         error instanceof BadRequestException ||

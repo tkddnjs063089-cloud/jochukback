@@ -64,15 +64,19 @@ export class MatchesController {
     return await this.matchesService.findAll();
   }
 
-  @Get(':id')
+  @Get(':dateId')
   @ApiOperation({
-    summary: '경기 상세 조회',
-    description: 'ID로 특정 경기를 조회합니다.',
+    summary: 'dateId로 특정 경기 조회',
+    description: 'dateId로 특정 경기를 조회합니다.',
   })
-  @ApiParam({ name: 'id', description: '경기 ID', example: 1 })
+  @ApiParam({
+    name: 'dateId',
+    description: '경기 dateId',
+    example: '2026-01-05',
+  })
   @ApiResponse({ status: 200, description: '경기 조회 성공' })
-  async findOne(@Param('id') id: number): Promise<Matches> {
-    return await this.matchesService.findOne(id);
+  async findByDateId(@Param('dateId') dateId: string): Promise<Matches[]> {
+    return await this.matchesService.findByDateId(dateId);
   }
 
   @Get('date/:matchDate')

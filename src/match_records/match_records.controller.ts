@@ -60,8 +60,24 @@ export class MatchRecordsController {
     summary: '전체 경기 기록 조회',
     description: '모든 경기 기록을 조회합니다.',
   })
+  @ApiBody({
+    required: false,
+    type: CreateMatchRecordDto,
+    description:
+      '필터 옵션 (선택적): 특정 조건으로 조회하고 싶을 때 사용할 수 있습니다. (현재 API에서는 미지원, 문서 예시용)',
+    examples: {
+      기본예시: {
+        value: {
+          playerId: 1,
+          teamId: 1,
+          dateId: '2026-01-01T09:00:00.000Z',
+        },
+      },
+    },
+  })
   @ApiResponse({ status: 200, description: '경기 기록 목록 조회 성공' })
   async findAll(): Promise<MatchRecords[]> {
+    // 현재는 필터 기능 없이 전체 목록만 반환
     return await this.matchRecordsService.findAll();
   }
   @Patch(':id')

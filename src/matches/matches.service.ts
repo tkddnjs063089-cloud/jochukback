@@ -112,21 +112,23 @@ export class MatchesService {
     }
   }
 
-  async findOne(id: number): Promise<Matches> {
+  async findByDateId(dateId: string): Promise<Matches[]> {
     try {
-      if (!id || isNaN(id)) {
+      if (!dateId) {
         throw new BadRequestException(
-          '[프론트엔드 문제] 유효한 경기 ID가 필요합니다. 숫자 형태의 ID를 전달해주세요.',
+          '[프론트엔드 문제] 유효한 경기 dateId가 필요합니다.',
         );
       }
 
-      const match = await this.matchesRepository.findOne({ where: { id } });
-      if (!match) {
+      const matches = await this.matchesRepository.find({
+        where: { matchDate: dateId },
+      });
+      if (matches.length === 0) {
         throw new NotFoundException(
-          `[프론트엔드 문제] ID가 ${id}인 경기를 찾을 수 없습니다. 존재하는 경기 ID인지 확인해주세요.`,
+          `[프론트엔드 문제] dateId가 ${dateId}인 경기를 찾을 수 없습니다. 존재하는 경기 dateId인지 확인해주세요.`,
         );
       }
-      return match;
+      return matches;
     } catch (error) {
       console.error('[MatchesService.findOne] 에러:', error);
 
