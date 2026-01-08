@@ -21,6 +21,9 @@ export class Matches {
   @Column('integer', { name: 'match_order' })
   matchOrder: number;
 
+  @Column('integer', { name: 'team_id', nullable: true })
+  teamId: number | null;
+
   @Column('timestamp without time zone', {
     name: 'created_at',
     nullable: true,

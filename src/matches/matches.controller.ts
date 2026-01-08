@@ -33,8 +33,24 @@ export class MatchesController {
   @ApiResponse({
     status: 201,
     description: '경기가 성공적으로 등록되었습니다.',
+    schema: {
+      type: 'object',
+      properties: {
+        message: { type: 'string' },
+        id: { type: 'number' },
+        matchDate: { type: 'string' },
+        matchOrder: { type: 'number' },
+        teamId: { type: 'number', nullable: true },
+      },
+    },
   })
-  async create(@Body() createMatchDto: CreateMatchDto): Promise<string> {
+  async create(@Body() createMatchDto: CreateMatchDto): Promise<{
+    message: string;
+    id: number;
+    matchDate: string;
+    matchOrder: number;
+    teamId?: number;
+  }> {
     return await this.matchesService.create(createMatchDto);
   }
 

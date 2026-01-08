@@ -15,22 +15,42 @@ export class MatchesService {
     @InjectRepository(Matches)
     private readonly matchesRepository: Repository<Matches>,
   ) {}
-  async create(createMatchDto: CreateMatchDto): Promise<string> {
-    const match = this.matchesRepository.create(createMatchDto);
-    if (
-      await this.matchesRepository.findOne({
-        where: {
-          matchDate: createMatchDto.matchDate,
-          matchOrder: createMatchDto.matchOrder,
-        },
-      })
-    ) {
+  async create(createMatchDto: CreateMatchDto): Promise<{
+    message: string;
+    id: number;
+    matchDate: string;
+    matchOrder: number;
+    teamId?: number;
+  }> {
+    // 중복 체크
+    const existing = await this.matchesRepository.findOne({
+      where: {
+        matchDate: createMatchDto.matchDate,
+        matchOrder: createMatchDto.matchOrder,
+      },
+    });
+
+    if (existing) {
       throw new BadRequestException(
-        `${createMatchDto.matchDate}일 ${createMatchDto.matchOrder}번째 경기 ${createMatchDto.teamId}팀 경기는 이미 존재합니다.`,
+        `${createMatchDto.matchDate}일 ${createMatchDto.matchOrder}번째 경기는 이미 존재합니다.`,
       );
     }
+
+    const match = this.matchesRepository.create({
+      matchDate: createMatchDto.matchDate,
+      matchOrder: createMatchDto.matchOrder,
+      teamId: createMatchDto.teamId ?? null,
+    });
+
     await this.matchesRepository.save(match);
-    return `${createMatchDto.matchDate}일 ${createMatchDto.matchOrder}번째 경기 ${createMatchDto.teamId}팀 경기가 생성되었습니다.`;
+
+    return {
+      message: `${createMatchDto.matchDate}일 ${createMatchDto.matchOrder}번째 경기가 생성되었습니다.`,
+      id: match.id,
+      matchDate: match.matchDate,
+      matchOrder: match.matchOrder,
+      teamId: match.teamId ?? undefined,
+    };
   }
   async findAll(): Promise<Matches[]> {
     return this.matchesRepository.find();
