@@ -80,6 +80,20 @@ export class MatchRecordsController {
     // 현재는 필터 기능 없이 전체 목록만 반환
     return await this.matchRecordsService.findAll();
   }
+  @Get(':dateId')
+  @ApiOperation({
+    summary: 'dateId로 특정 경기 기록 조회',
+    description: 'dateId로 특정 경기 기록 목록을 조회합니다.',
+  })
+  @ApiParam({
+    name: 'dateId',
+    description: '경기 기록 dateId',
+    example: '2026-01-01',
+  })
+  @ApiResponse({ status: 200, description: '경기 기록 목록 조회 성공' })
+  async findByDateId(@Param('dateId') dateId: string): Promise<MatchRecords[]> {
+    return await this.matchRecordsService.findByDateId(dateId);
+  }
   @Patch(':id')
   @ApiOperation({
     summary: '경기 기록 수정',
