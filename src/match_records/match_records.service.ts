@@ -144,9 +144,10 @@ export class MatchRecordsService {
   async update(
     id: number,
     updateMatchRecordDto: UpdateMatchRecordDto,
-  ): Promise<string> {
+  ): Promise<{ message: string; record: MatchRecords }> {
     const matchRecord = await this.matchRecordsRepository.findOne({
       where: { id },
+      relations: ['player'],
     });
     if (!matchRecord) {
       throw new NotFoundException('해당 경기 기록을 찾을 수 없습니다.');
@@ -154,16 +155,24 @@ export class MatchRecordsService {
     await this.matchRecordsRepository.save(
       Object.assign(matchRecord, updateMatchRecordDto),
     );
-    return `${matchRecord.player.name} 선수의 경기 기록이 수정되었습니다.`;
+    return {
+      message: `${matchRecord.player?.name ?? id} 선수의 경기 기록이 수정되었습니다.`,
+      record: matchRecord,
+    };
   }
-  async remove(id: number): Promise<string> {
+  async remove(id: number): Promise<{ message: string; id: number }> {
     const matchRecord = await this.matchRecordsRepository.findOne({
       where: { id },
+      relations: ['player'],
     });
     if (!matchRecord) {
       throw new NotFoundException('해당 경기 기록을 찾을 수 없습니다.');
     }
+    const playerName = matchRecord.player?.name ?? id;
     await this.matchRecordsRepository.remove(matchRecord);
-    return `${matchRecord.player.name} 선수의 경기 기록이 삭제되었습니다.`;
+    return {
+      message: `${playerName} 선수의 경기 기록이 삭제되었습니다.`,
+      id,
+    };
   }
 }

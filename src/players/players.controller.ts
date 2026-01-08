@@ -83,7 +83,7 @@ export class PlayersController {
   async update(
     @Param('id') id: number,
     @Body() updatePlayerDto: UpdatePlayerDto,
-  ): Promise<string> {
+  ): Promise<{ message: string; player: Players }> {
     return await this.playersService.update(id, updatePlayerDto);
   }
 
@@ -97,7 +97,7 @@ export class PlayersController {
     status: 200,
     description: '선수가 성공적으로 삭제되었습니다.',
   })
-  async remove(@Param('id') id: number): Promise<string> {
+  async remove(@Param('id') id: number): Promise<{ message: string; id: number }> {
     return await this.playersService.remove(id);
   }
 }

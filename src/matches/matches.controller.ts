@@ -128,7 +128,7 @@ export class MatchesController {
   async update(
     @Param('id') id: number,
     @Body() updateMatchDto: UpdateMatchDto,
-  ): Promise<string> {
+  ): Promise<{ message: string; match: Matches }> {
     return await this.matchesService.update(id, updateMatchDto);
   }
 
@@ -139,7 +139,9 @@ export class MatchesController {
     status: 200,
     description: '경기가 성공적으로 삭제되었습니다.',
   })
-  async remove(@Param('id') id: number): Promise<string> {
+  async remove(
+    @Param('id') id: number,
+  ): Promise<{ message: string; id: number }> {
     return await this.matchesService.remove(id);
   }
 }

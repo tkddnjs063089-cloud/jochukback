@@ -32,20 +32,27 @@ export class PlayersService {
     }
     return player;
   }
-  async update(id: number, updatePlayerDto: UpdatePlayerDto): Promise<string> {
+  async update(id: number, updatePlayerDto: UpdatePlayerDto): Promise<{ message: string; player: Players }> {
     const player = await this.playersRepository.findOne({ where: { id } });
     if (!player) {
       throw new NotFoundException('해당 선수를 찾을 수 없습니다.');
     }
     await this.playersRepository.save(Object.assign(player, updatePlayerDto));
-    return `${player.name} 선수가 수정되었습니다.`;
+    return {
+      message: `${player.name} 선수가 수정되었습니다.`,
+      player,
+    };
   }
-  async remove(id: number): Promise<string> {
+  async remove(id: number): Promise<{ message: string; id: number }> {
     const player = await this.playersRepository.findOne({ where: { id } });
     if (!player) {
       throw new NotFoundException('해당 선수를 찾을 수 없습니다.');
     }
+    const playerName = player.name;
     await this.playersRepository.remove(player);
-    return `${player.name} 선수가 삭제되었습니다.`;
+    return {
+      message: `${playerName} 선수가 삭제되었습니다.`,
+      id,
+    };
   }
 }

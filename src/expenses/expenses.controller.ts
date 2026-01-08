@@ -45,7 +45,7 @@ export class ExpensesController {
     status: 201,
     description: '지출 내역이 성공적으로 등록되었습니다.',
   })
-  async create(@Body() createExpenseDto: CreateExpenseDto): Promise<string> {
+  async create(@Body() createExpenseDto: CreateExpenseDto): Promise<{ message: string; id: number; expense: Expenses }> {
     return await this.expensesService.create(createExpenseDto);
   }
   @Get()
@@ -89,7 +89,7 @@ export class ExpensesController {
   async update(
     @Param('id') id: number,
     @Body() updateExpenseDto: UpdateExpenseDto,
-  ): Promise<string> {
+  ): Promise<{ message: string; expense: Expenses }> {
     return await this.expensesService.update(id, updateExpenseDto);
   }
   @Delete(':id')
@@ -99,7 +99,7 @@ export class ExpensesController {
   })
   @ApiParam({ name: 'id', description: '지출 내역 ID', example: 1 })
   @ApiResponse({ status: 200, description: '지출 내역 삭제 성공' })
-  async remove(@Param('id') id: number): Promise<string> {
+  async remove(@Param('id') id: number): Promise<{ message: string; id: number }> {
     return await this.expensesService.remove(id);
   }
 }

@@ -36,7 +36,7 @@ export class MatchDatesController {
   })
   async create(
     @Body() createMatchDateDto: CreateMatchDateDto,
-  ): Promise<string> {
+  ): Promise<{ message: string; id: number; matchDate: MatchDates }> {
     return await this.matchDatesService.create(createMatchDateDto);
   }
 
@@ -78,7 +78,7 @@ export class MatchDatesController {
   async update(
     @Param('id') id: number,
     @Body() updateMatchDateDto: UpdateMatchDateDto,
-  ): Promise<string> {
+  ): Promise<{ message: string; matchDate: MatchDates }> {
     return await this.matchDatesService.update(+id, updateMatchDateDto);
   }
 
@@ -92,7 +92,7 @@ export class MatchDatesController {
     status: 200,
     description: '경기 일정이 성공적으로 삭제되었습니다.',
   })
-  async remove(@Param('id') id: number): Promise<string> {
+  async remove(@Param('id') id: number): Promise<{ message: string; id: number }> {
     return await this.matchDatesService.remove(+id);
   }
 }

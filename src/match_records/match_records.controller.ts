@@ -94,7 +94,7 @@ export class MatchRecordsController {
   async update(
     @Param('id') id: number,
     @Body() updateMatchRecordDto: UpdateMatchRecordDto,
-  ): Promise<string> {
+  ): Promise<{ message: string; record: MatchRecords }> {
     return await this.matchRecordsService.update(id, updateMatchRecordDto);
   }
   @Delete(':id')
@@ -104,7 +104,7 @@ export class MatchRecordsController {
   })
   @ApiParam({ name: 'id', description: '경기 기록 ID', example: 1 })
   @ApiResponse({ status: 200, description: '경기 기록 삭제 성공' })
-  async remove(@Param('id') id: number): Promise<string> {
+  async remove(@Param('id') id: number): Promise<{ message: string; id: number }> {
     return await this.matchRecordsService.remove(id);
   }
 }

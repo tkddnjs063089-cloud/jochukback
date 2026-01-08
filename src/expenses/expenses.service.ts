@@ -14,7 +14,7 @@ export class ExpensesService {
     @InjectRepository(Players)
     private readonly playersRepository: Repository<Players>,
   ) {}
-  async create(createExpenseDto: CreateExpenseDto): Promise<string> {
+  async create(createExpenseDto: CreateExpenseDto): Promise<{ message: string; id: number; expense: Expenses }> {
     const player = await this.playersRepository.findOne({
       where: { id: createExpenseDto.playerId },
     });
@@ -24,7 +24,11 @@ export class ExpensesService {
     const expense = this.expensesRepository.create(createExpenseDto);
     expense.player = player;
     await this.expensesRepository.save(expense);
-    return `${player.name}의 ${expense.category} 지출 내역이 등록되었습니다.`;
+    return {
+      message: `${player.name}의 ${expense.category} 지출 내역이 등록되었습니다.`,
+      id: expense.id,
+      expense,
+    };
   }
   async findAll(): Promise<Expenses[]> {
     return this.expensesRepository.find();
@@ -39,7 +43,7 @@ export class ExpensesService {
   async update(
     id: number,
     updateExpenseDto: UpdateExpenseDto,
-  ): Promise<string> {
+  ): Promise<{ message: string; expense: Expenses }> {
     const expense = await this.expensesRepository.findOne({ where: { id } });
     if (!expense) {
       throw new NotFoundException('해당 지출 내역을 찾을 수 없습니다.');
@@ -47,14 +51,21 @@ export class ExpensesService {
     await this.expensesRepository.save(
       Object.assign(expense, updateExpenseDto),
     );
-    return `${expense.expenseDate} 지출 내역이 수정되었습니다.`;
+    return {
+      message: `${expense.expenseDate} 지출 내역이 수정되었습니다.`,
+      expense,
+    };
   }
-  async remove(id: number): Promise<string> {
+  async remove(id: number): Promise<{ message: string; id: number }> {
     const expense = await this.expensesRepository.findOne({ where: { id } });
     if (!expense) {
       throw new NotFoundException('해당 지출 내역을 찾을 수 없습니다.');
     }
+    const expenseDate = expense.expenseDate;
     await this.expensesRepository.remove(expense);
-    return `${expense.expenseDate} 지출 내역이 삭제되었습니다.`;
+    return {
+      message: `${expenseDate} 지출 내역이 삭제되었습니다.`,
+      id,
+    };
   }
 }

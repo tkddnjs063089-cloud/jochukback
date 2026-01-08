@@ -33,7 +33,7 @@ export class MembershipfeesController {
   })
   async create(
     @Body() createMembershipFeeDto: CreateMembershipFeeDto,
-  ): Promise<string> {
+  ): Promise<{ message: string; id: number; membershipFee: MembershipFees }> {
     return await this.membershipfeesService.create(createMembershipFeeDto);
   }
 
@@ -65,7 +65,7 @@ export class MembershipfeesController {
   async update(
     @Param('id') id: string,
     @Body() updateMembershipFeeDto: UpdateMembershipFeeDto,
-  ): Promise<string> {
+  ): Promise<{ message: string; membershipFee: MembershipFees }> {
     return await this.membershipfeesService.update(+id, updateMembershipFeeDto);
   }
 
@@ -73,7 +73,7 @@ export class MembershipfeesController {
   @ApiOperation({ summary: '회비 삭제', description: '회비를 삭제합니다.' })
   @ApiParam({ name: 'id', description: '회비 ID', example: 1 })
   @ApiResponse({ status: 200, description: '회비 삭제 성공' })
-  async remove(@Param('id') id: string): Promise<string> {
+  async remove(@Param('id') id: string): Promise<{ message: string; id: number }> {
     return await this.membershipfeesService.remove(+id);
   }
 }

@@ -14,7 +14,7 @@ export class MembershipfeesService {
 
   async create(
     createMembershipFeeDto: CreateMembershipFeeDto,
-  ): Promise<string> {
+  ): Promise<{ message: string; id: number; membershipFee: MembershipFees }> {
     const membershipFee = this.membershipFeesRepository.create({
       revenueDate: createMembershipFeeDto.revenueDate,
       amount: createMembershipFeeDto.amount,
@@ -22,7 +22,11 @@ export class MembershipfeesService {
       player: { id: createMembershipFeeDto.playerId },
     });
     await this.membershipFeesRepository.save(membershipFee);
-    return '회비가 성공적으로 등록되었습니다.';
+    return {
+      message: '회비가 성공적으로 등록되었습니다.',
+      id: membershipFee.id,
+      membershipFee,
+    };
   }
 
   async findAll(): Promise<MembershipFees[]> {
@@ -45,7 +49,7 @@ export class MembershipfeesService {
   async update(
     id: number,
     updateMembershipFeeDto: UpdateMembershipFeeDto,
-  ): Promise<string> {
+  ): Promise<{ message: string; membershipFee: MembershipFees }> {
     const membershipFee = await this.membershipFeesRepository.findOne({
       where: { id },
     });
@@ -55,10 +59,13 @@ export class MembershipfeesService {
     await this.membershipFeesRepository.save(
       Object.assign(membershipFee, updateMembershipFeeDto),
     );
-    return '회비 정보가 성공적으로 수정되었습니다.';
+    return {
+      message: '회비 정보가 성공적으로 수정되었습니다.',
+      membershipFee,
+    };
   }
 
-  async remove(id: number): Promise<string> {
+  async remove(id: number): Promise<{ message: string; id: number }> {
     const membershipFee = await this.membershipFeesRepository.findOne({
       where: { id },
     });
@@ -66,6 +73,9 @@ export class MembershipfeesService {
       throw new NotFoundException('해당 회비 정보를 찾을 수 없습니다.');
     }
     await this.membershipFeesRepository.remove(membershipFee);
-    return '회비 정보가 성공적으로 삭제되었습니다.';
+    return {
+      message: '회비 정보가 성공적으로 삭제되었습니다.',
+      id,
+    };
   }
 }
