@@ -104,7 +104,9 @@ export class MatchRecordsController {
   })
   @ApiParam({ name: 'id', description: '경기 기록 ID', example: 1 })
   @ApiResponse({ status: 200, description: '경기 기록 삭제 성공' })
-  async remove(@Param('id') id: number): Promise<{ message: string; id: number }> {
+  async remove(
+    @Param('id') id: number,
+  ): Promise<{ message: string; id: number }> {
     return await this.matchRecordsService.remove(id);
   }
 }

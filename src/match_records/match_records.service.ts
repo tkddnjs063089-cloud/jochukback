@@ -29,7 +29,10 @@ export class MatchRecordsService {
     record: MatchRecords;
   }> {
     try {
-      console.log('[MatchRecordsService.create] 받은 데이터:', createMatchRecordDto);
+      console.log(
+        '[MatchRecordsService.create] 받은 데이터:',
+        createMatchRecordDto,
+      );
 
       // 필수 필드 검증
       if (!createMatchRecordDto.playerId) {
@@ -67,11 +70,23 @@ export class MatchRecordsService {
       const assists =
         createMatchRecordDto.assist ?? createMatchRecordDto.assists ?? 0;
 
-      // dateId 변환: 숫자(ms timestamp)면 ISO string으로 변환
+      // dateId 변환: 숫자(ms timestamp)이면 타임존 보정 없이
+      // Postgres `timestamp without time zone`에 그대로 저장할 수 있도록
+      // 'YYYY-MM-DD HH:mm:ss' 형식으로 포맷합니다.
       let dateIdValue: string | null = null;
       if (createMatchRecordDto.dateId != null) {
         if (typeof createMatchRecordDto.dateId === 'number') {
-          dateIdValue = new Date(createMatchRecordDto.dateId).toISOString();
+          // 프론트가 로컬(예: KST) 기준으로 생성한 밀리초 타임스탬프를
+          // 서버에서 동일한 '벽시각'으로 저장하려면 클라이언트의 UTC 오프셋을
+          // 더해주어야 합니다. 여기서는 KST(UTC+9)를 가정해 9시간을 더합니다.
+          const KST_OFFSET = 9 * 60 * 60 * 1000;
+          const d = new Date(createMatchRecordDto.dateId + KST_OFFSET);
+          const pad = (n: number) => n.toString().padStart(2, '0');
+          dateIdValue = `${d.getUTCFullYear()}-${pad(d.getUTCMonth() + 1)}-${pad(
+            d.getUTCDate(),
+          )} ${pad(d.getUTCHours())}:${pad(d.getUTCMinutes())}:${pad(
+            d.getUTCSeconds(),
+          )}`;
         } else {
           dateIdValue = createMatchRecordDto.dateId;
         }
