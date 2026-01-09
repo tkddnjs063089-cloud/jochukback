@@ -12,7 +12,6 @@ import { CreateMembershipFeeDto } from './dto/create-membershipfee.dto';
 import { UpdateMembershipFeeDto } from './dto/update-membershipfee.dto';
 import { MembershipFees } from './entities/membershipfee.entity';
 import { ApiOperation, ApiParam, ApiResponse, ApiTags } from '@nestjs/swagger';
-import { InjectRepository } from '@nestjs/typeorm';
 
 @Controller('membershipfees')
 @ApiTags('membershipfees')

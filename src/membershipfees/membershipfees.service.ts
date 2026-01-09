@@ -9,15 +9,12 @@ import { Repository } from 'typeorm';
 import { CreateMembershipFeeDto } from './dto/create-membershipfee.dto';
 import { UpdateMembershipFeeDto } from './dto/update-membershipfee.dto';
 import { MembershipFees } from './entities/membershipfee.entity';
-import { Players } from 'src/players/entities/player.entity';
 
 @Injectable()
 export class MembershipfeesService {
   constructor(
     @InjectRepository(MembershipFees)
     private readonly membershipFeesRepository: Repository<MembershipFees>,
-    @InjectRepository(Players)
-    private readonly playersRepository: Repository<Players>,
   ) {}
 
   async create(
@@ -38,14 +35,6 @@ export class MembershipfeesService {
       if (createMembershipFeeDto.amount == null) {
         throw new BadRequestException(
           '[프론트엔드 문제] amount 필드가 누락되었습니다.',
-        );
-      }
-      const player = await this.playersRepository.findOne({
-        where: { name: createMembershipFeeDto.playerName },
-      });
-      if (!player) {
-        throw new BadRequestException(
-          '[프론트엔드 문제] 존재하지 않는 선수 이름입니다. playerName를 확인해주세요.',
         );
       }
 
@@ -103,7 +92,6 @@ export class MembershipfeesService {
       try {
         return await this.membershipFeesRepository.find({
           order: { revenueDate: 'DESC' },
-          relations: ['player'],
         });
       } catch (frontendErr) {
         // 프론트 관련 에러를 여기서 구분하여 잡아서 던짐

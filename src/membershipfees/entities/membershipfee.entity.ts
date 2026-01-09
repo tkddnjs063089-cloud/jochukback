@@ -1,3 +1,4 @@
+import { Players } from 'src/players/entities/player.entity';
 import { Column, Entity, Index, PrimaryGeneratedColumn } from 'typeorm';
 
 @Index('membership_fees_pkey', ['id'], { unique: true })
