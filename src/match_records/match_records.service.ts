@@ -70,46 +70,83 @@ export class MatchRecordsService {
       const assists =
         createMatchRecordDto.assist ?? createMatchRecordDto.assists ?? 0;
 
-      // dateId 변환: 숫자(ms timestamp)이면 타임존 보정 없이
-      // Postgres `timestamp without time zone`에 그대로 저장할 수 있도록
-      // 'YYYY-MM-DD HH:mm:ss' 형식으로 포맷합니다.
+      // dateId 변환: 'YYYY-MM-DD' 형식으로 통일
       let dateIdValue: string | null = null;
       if (createMatchRecordDto.dateId != null) {
         if (typeof createMatchRecordDto.dateId === 'number') {
-          // 프론트가 로컬(예: KST) 기준으로 생성한 밀리초 타임스탬프를
-          // 서버에서 동일한 '벽시각'으로 저장하려면 클라이언트의 UTC 오프셋을
-          // 더해주어야 합니다. 여기서는 KST(UTC+9)를 가정해 9시간을 더합니다.
-          const KST_OFFSET = 9 * 60 * 60 * 1000;
-          const d = new Date(createMatchRecordDto.dateId + KST_OFFSET);
+          // 프론트에서 받은 timestamp를 KST 기준으로 YYYY-MM-DD 변환
+          const d = new Date(createMatchRecordDto.dateId);
           const pad = (n: number) => n.toString().padStart(2, '0');
-          dateIdValue = `${d.getUTCFullYear()}-${pad(d.getUTCMonth() + 1)}-${pad(
-            d.getUTCDate(),
-          )} ${pad(d.getUTCHours())}:${pad(d.getUTCMinutes())}:${pad(
-            d.getUTCSeconds(),
+          // 로컬 시간 기준으로 변환 (프론트가 로컬 타임스탬프를 보낸다고 가정)
+          dateIdValue = `${d.getFullYear()}-${pad(d.getMonth() + 1)}-${pad(
+            d.getDate(),
           )}`;
-        } else {
-          dateIdValue = createMatchRecordDto.dateId;
+        } else if (typeof createMatchRecordDto.dateId === 'string') {
+          // '2026-01-01T00:00:00.000Z' 또는 '2026-01-01' 모두 처리
+          if (createMatchRecordDto.dateId.includes('T')) {
+            dateIdValue = createMatchRecordDto.dateId.split('T')[0];
+          } else {
+            dateIdValue = createMatchRecordDto.dateId;
+          }
         }
       }
 
-      const matchRecord = this.matchRecordsRepository.create({
+      // [UPSERT 구현] 기존 기록 조회
+      // playerId, teamId, dateId 세트가 같으면 동일한 기록으로 간주
+      const findOptions: any = {
         playerId: createMatchRecordDto.playerId,
-        teamId: createMatchRecordDto.teamId ?? null,
-        dateId: dateIdValue,
-        attendance: createMatchRecordDto.attendance ?? false,
-        late: createMatchRecordDto.late ?? false,
-        goals,
-        assists,
-        cleanSheet: createMatchRecordDto.cleanSheet ?? 0,
-        mom: createMatchRecordDto.mom ?? 0,
-        wins: createMatchRecordDto.wins ?? 0,
-        draws: createMatchRecordDto.draws ?? 0,
-        losses: createMatchRecordDto.losses ?? 0,
-        player,
-        team,
+        dateId: dateIdValue as any,
+      };
+
+      if (createMatchRecordDto.teamId) {
+        findOptions.teamId = createMatchRecordDto.teamId;
+      } else {
+        // teamId가 없거나 null인 경우 (TypeORM에서 IsNull()을 써야 정확히 매칭됨)
+        const { IsNull } = require('typeorm');
+        findOptions.teamId = IsNull();
+      }
+
+      let matchRecord = await this.matchRecordsRepository.findOne({
+        where: findOptions,
       });
 
-      console.log('[MatchRecordsService.create] 저장할 데이터:', matchRecord);
+      if (matchRecord) {
+        // [UPDATE] 기존 기록이 있으면 업데이트
+        console.log(
+          '[MatchRecordsService.create] 기존 기록 업데이트 ID:',
+          matchRecord.id,
+        );
+        matchRecord.attendance =
+          createMatchRecordDto.attendance ?? matchRecord.attendance;
+        matchRecord.late = createMatchRecordDto.late ?? matchRecord.late;
+        matchRecord.goals = goals;
+        matchRecord.assists = assists;
+        matchRecord.cleanSheet =
+          createMatchRecordDto.cleanSheet ?? matchRecord.cleanSheet;
+        matchRecord.mom = createMatchRecordDto.mom ?? matchRecord.mom;
+        matchRecord.wins = createMatchRecordDto.wins ?? matchRecord.wins;
+        matchRecord.draws = createMatchRecordDto.draws ?? matchRecord.draws;
+        matchRecord.losses = createMatchRecordDto.losses ?? matchRecord.losses;
+      } else {
+        // [INSERT] 없으면 새로 생성
+        console.log('[MatchRecordsService.create] 신규 기록 생성');
+        matchRecord = this.matchRecordsRepository.create({
+          playerId: createMatchRecordDto.playerId,
+          teamId: createMatchRecordDto.teamId ?? null,
+          dateId: dateIdValue,
+          attendance: createMatchRecordDto.attendance ?? false,
+          late: createMatchRecordDto.late ?? false,
+          goals,
+          assists,
+          cleanSheet: createMatchRecordDto.cleanSheet ?? 0,
+          mom: createMatchRecordDto.mom ?? 0,
+          wins: createMatchRecordDto.wins ?? 0,
+          draws: createMatchRecordDto.draws ?? 0,
+          losses: createMatchRecordDto.losses ?? 0,
+          player,
+          team,
+        });
+      }
 
       await this.matchRecordsRepository.save(matchRecord);
 
