@@ -16,8 +16,6 @@ export class ExpensesService {
   constructor(
     @InjectRepository(Expenses)
     private readonly expensesRepository: Repository<Expenses>,
-    @InjectRepository(Players)
-    private readonly playersRepository: Repository<Players>,
   ) {}
 
   async create(
@@ -25,11 +23,6 @@ export class ExpensesService {
   ): Promise<{ message: string; id: number; expense: Expenses }> {
     try {
       // 필수 필드 검증
-      if (!createExpenseDto.playerId) {
-        throw new BadRequestException(
-          '[프론트엔드 문제] playerId 필드가 누락되었습니다.',
-        );
-      }
       if (!createExpenseDto.expenseDate) {
         throw new BadRequestException(
           '[프론트엔드 문제] expenseDate 필드가 누락되었습니다.',
@@ -41,21 +34,11 @@ export class ExpensesService {
         );
       }
 
-      const player = await this.playersRepository.findOne({
-        where: { id: createExpenseDto.playerId },
-      });
-      if (!player) {
-        throw new NotFoundException(
-          `[프론트엔드 문제] ID가 ${createExpenseDto.playerId}인 선수를 찾을 수 없습니다. playerId를 확인해주세요.`,
-        );
-      }
-
       const expense = this.expensesRepository.create(createExpenseDto);
-      expense.player = player;
       await this.expensesRepository.save(expense);
 
       return {
-        message: `${player.name}의 ${expense.category} 지출 내역이 등록되었습니다.`,
+        message: `${expense.category} 지출 내역이 등록되었습니다.`,
         id: expense.id,
         expense,
       };
@@ -71,7 +54,7 @@ export class ExpensesService {
 
       if (error.code === '23503') {
         throw new BadRequestException(
-          '[프론트엔드 문제] 존재하지 않는 선수 ID입니다. playerId를 확인해주세요.',
+          '[프론트엔드 문제] 존재하지 않는 지출 내역 ID입니다. id를 확인해주세요.',
         );
       }
       if (error.code === '22P02') {
@@ -88,7 +71,7 @@ export class ExpensesService {
 
   async findAll(): Promise<Expenses[]> {
     try {
-      return await this.expensesRepository.find({ relations: ['player'] });
+      return await this.expensesRepository.find();
     } catch (error) {
       console.error('[ExpensesService.findAll] 에러:', error);
       throw new InternalServerErrorException(
@@ -107,7 +90,6 @@ export class ExpensesService {
 
       const expense = await this.expensesRepository.findOne({
         where: { id },
-        relations: ['player'],
       });
       if (!expense) {
         throw new NotFoundException(

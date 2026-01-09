@@ -26,9 +26,6 @@ export class Players {
   })
   createdAt: Date | null;
 
-  @OneToMany(() => Expenses, (expenses) => expenses.player)
-  expenses: Expenses[];
-
   @OneToMany(() => MatchRecords, (matchRecords) => matchRecords.player)
   matchRecords: MatchRecords[];
 

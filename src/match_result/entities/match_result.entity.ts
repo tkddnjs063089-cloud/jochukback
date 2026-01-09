@@ -7,7 +7,7 @@ export class MatchResults {
   id: number;
 
   @Column('timestamp without time zone', { name: 'date_id' })
-  dateId: string;
+  dateId: Date;
 
   @Column('character varying', { name: 'team1_name', length: 50 })
   team1Name: string;

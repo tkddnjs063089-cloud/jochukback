@@ -33,11 +33,9 @@ export class MatchResultController {
     status: 201,
     description: '경기 결과가 성공적으로 등록되었습니다.',
   })
-  async create(@Body() createMatchResultDto: CreateMatchResultDto): Promise<{
-    message: string;
-    id: number;
-    result: MatchResults;
-  }> {
+  async create(
+    @Body() createMatchResultDto: CreateMatchResultDto,
+  ): Promise<MatchResults> {
     return await this.matchResultService.create(createMatchResultDto);
   }
   @Get()
@@ -54,10 +52,10 @@ export class MatchResultController {
     summary: 'dateId로 특정 경기 결과 조회',
     description: 'dateId로 특정 경기 결과 목록을 조회합니다.',
   })
-  @ApiParam({ name: 'dateId', description: '경기 결과 dateId' })
+  @ApiParam({ name: 'dateId', description: '경기 결과 dateId', type: Date })
   @ApiResponse({ status: 200, description: '경기 결과 목록 조회 성공' })
-  async findByDateId(@Param('dateId') dateId: string): Promise<MatchResults[]> {
-    return await this.matchResultService.findByDateId(dateId);
+  async findByDateId(@Param('dateId') dateId: Date): Promise<MatchResults[]> {
+    return await this.matchResultService.findByDateId(new Date(dateId));
   }
   @Patch(':dateId')
   @ApiOperation({

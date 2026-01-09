@@ -33,8 +33,4 @@ export class Expenses {
     default: () => 'now()',
   })
   createdAt: Date | null;
-
-  @ManyToOne(() => Players, (players) => players.expenses)
-  @JoinColumn([{ name: 'player_id', referencedColumnName: 'id' }])
-  player: Players;
 }

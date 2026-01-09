@@ -33,7 +33,6 @@ export class ExpensesController {
     examples: {
       홍길동: {
         value: {
-          playerId: 1,
           expenseDate: '2026-01-05',
           amount: 50000,
           category: '식비',
@@ -45,7 +44,9 @@ export class ExpensesController {
     status: 201,
     description: '지출 내역이 성공적으로 등록되었습니다.',
   })
-  async create(@Body() createExpenseDto: CreateExpenseDto): Promise<{ message: string; id: number; expense: Expenses }> {
+  async create(
+    @Body() createExpenseDto: CreateExpenseDto,
+  ): Promise<{ message: string; id: number; expense: Expenses }> {
     return await this.expensesService.create(createExpenseDto);
   }
   @Get()
@@ -77,7 +78,6 @@ export class ExpensesController {
     examples: {
       홍길동: {
         value: {
-          playerId: 1,
           expenseDate: '2026-01-05',
           amount: 50000,
           category: '식비',
@@ -99,7 +99,9 @@ export class ExpensesController {
   })
   @ApiParam({ name: 'id', description: '지출 내역 ID', example: 1 })
   @ApiResponse({ status: 200, description: '지출 내역 삭제 성공' })
-  async remove(@Param('id') id: number): Promise<{ message: string; id: number }> {
+  async remove(
+    @Param('id') id: number,
+  ): Promise<{ message: string; id: number }> {
     return await this.expensesService.remove(id);
   }
 }

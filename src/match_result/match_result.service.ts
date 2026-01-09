@@ -15,28 +15,14 @@ export class MatchResultService {
     @InjectRepository(MatchResults)
     private readonly matchResultsRepository: Repository<MatchResults>,
   ) {}
-  async create(createMatchResultDto: CreateMatchResultDto): Promise<{
-    message: string;
-    id: number;
-    result: MatchResults;
-  }> {
-    try {
-      console.log(
-        '[MatchResultService.create] 받은 데이터:',
-        createMatchResultDto,
-      );
-      return {
-        message: '경기 결과가 생성되었습니다.',
-        id: 1,
-        result: this.matchResultsRepository.create(createMatchResultDto),
-      };
-    } catch (error) {
-      console.error('[MatchResultService.create] 에러:', error);
-      throw new InternalServerErrorException(
-        `[백엔드 문제] 경기 결과 생성 중 서버 오류가 발생했습니다. 상세: ${error.message}`,
-      );
-    }
+  async create(createDto: CreateMatchResultDto) {
+    const data = {
+      ...createDto,
+      dateId: new Date(createDto.dateId),
+    };
+    return await this.matchResultsRepository.save(data);
   }
+
   async findAll(): Promise<MatchResults[]> {
     try {
       return await this.matchResultsRepository.find();
@@ -47,10 +33,10 @@ export class MatchResultService {
       );
     }
   }
-  async findByDateId(dateId: string): Promise<MatchResults[]> {
+  async findByDateId(dateId: Date): Promise<MatchResults[]> {
     try {
       const matchResults = await this.matchResultsRepository.find({
-        where: { dateId },
+        where: { dateId: new Date(dateId) },
       });
       if (!matchResults) {
         throw new NotFoundException(

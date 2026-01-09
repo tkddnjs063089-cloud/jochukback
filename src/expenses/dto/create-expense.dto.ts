@@ -8,11 +8,6 @@ import {
 import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger';
 
 export class CreateExpenseDto {
-  @ApiProperty({ description: '선수 ID', example: 1 })
-  @IsNumber()
-  @IsNotEmpty({ message: '선수 ID는 필수 입력 항목입니다.' })
-  playerId: number;
-
   @ApiProperty({ description: '지출 날짜', example: '2026-01-05' })
   @IsDateString()
   @IsNotEmpty({ message: '지출 날짜는 필수 입력 항목입니다.' })
