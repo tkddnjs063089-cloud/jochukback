@@ -1,12 +1,4 @@
-import {
-  Column,
-  Entity,
-  Index,
-  JoinColumn,
-  ManyToOne,
-  PrimaryGeneratedColumn,
-} from 'typeorm';
-import { Players } from '../../players/entities/player.entity';
+import { Column, Entity, Index, PrimaryGeneratedColumn } from 'typeorm';
 
 @Index('membership_fees_pkey', ['id'], { unique: true })
 @Entity('membership_fees', { schema: 'public' })
@@ -20,9 +12,6 @@ export class MembershipFees {
   @Column('integer', { name: 'amount', default: () => '0' })
   amount: number;
 
-  @Column('character varying', { name: 'player_name', length: 50 })
-  playerName: string;
-
   @Column('integer', { name: 'month_count', default: () => '1' })
   monthCount: number;
 
@@ -32,4 +21,7 @@ export class MembershipFees {
     default: () => 'CURRENT_TIMESTAMP',
   })
   createdAt: Date | null;
+
+  @Column('character varying', { name: 'player_name', length: 255 })
+  playerName: string;
 }

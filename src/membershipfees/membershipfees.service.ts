@@ -91,6 +91,7 @@ export class MembershipfeesService {
       try {
         return await this.membershipFeesRepository.find({
           order: { revenueDate: 'DESC' },
+          relations: ['player'],
         });
       } catch (frontendErr) {
         // 프론트 관련 에러를 여기서 구분하여 잡아서 던짐
