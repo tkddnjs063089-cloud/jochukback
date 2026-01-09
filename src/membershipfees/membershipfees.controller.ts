@@ -17,10 +17,7 @@ import { InjectRepository } from '@nestjs/typeorm';
 @Controller('membershipfees')
 @ApiTags('membershipfees')
 export class MembershipfeesController {
-  constructor(
-    @InjectRepository(MembershipFees)
-    private readonly membershipfeesService: MembershipfeesService,
-  ) {}
+  constructor(private readonly membershipfeesService: MembershipfeesService) {}
 
   @Post()
   @ApiOperation({
@@ -39,8 +36,8 @@ export class MembershipfeesController {
 
   @Get()
   @ApiOperation({
-    summary: '전체 회비 조회',
-    description: '모든 회비 목록을 조회합니다.',
+    summary: '회비 목록 조회',
+    description: '회비 목록을 조회합니다.',
   })
   @ApiResponse({ status: 200, description: '회비 목록 조회 성공' })
   async findAll(): Promise<MembershipFees[]> {
@@ -73,7 +70,9 @@ export class MembershipfeesController {
   @ApiOperation({ summary: '회비 삭제', description: '회비를 삭제합니다.' })
   @ApiParam({ name: 'id', description: '회비 ID', example: 1 })
   @ApiResponse({ status: 200, description: '회비 삭제 성공' })
-  async remove(@Param('id') id: string): Promise<{ message: string; id: number }> {
+  async remove(
+    @Param('id') id: string,
+  ): Promise<{ message: string; id: number }> {
     return await this.membershipfeesService.remove(+id);
   }
 }

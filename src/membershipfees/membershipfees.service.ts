@@ -42,7 +42,6 @@ export class MembershipfeesService {
         revenueDate: createMembershipFeeDto.revenueDate,
         amount: createMembershipFeeDto.amount,
         monthCount: createMembershipFeeDto.monthCount,
-        playerName: createMembershipFeeDto.playerName,
       });
       await this.membershipFeesRepository.save(membershipFee);
 
@@ -80,6 +79,15 @@ export class MembershipfeesService {
 
   async findAll(): Promise<MembershipFees[]> {
     try {
+      // findAll이 정상 수행되지 않을 때(아예 함수가 없을 때 등) 로그 추가
+      if (!this.membershipFeesRepository?.find) {
+        console.error(
+          '[MembershipfeesService.findAll] membershipFeesRepository.find 함수가 존재하지 않습니다.',
+        );
+        throw new InternalServerErrorException(
+          '[백엔드 문제] membershipFeesRepository.find 함수가 정의되어 있지 않습니다.',
+        );
+      }
       return await this.membershipFeesRepository.find({
         order: { revenueDate: 'DESC' },
       });
