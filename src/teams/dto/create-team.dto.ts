@@ -14,4 +14,12 @@ export class CreateTeamDto {
   @IsNotEmpty({ message: '팀 이름은 필수 입력 항목입니다.' })
   @MaxLength(255, { message: '팀 이름은 최대 255자 이하여야 합니다.' })
   teamName: string;
+
+  @ApiPropertyOptional({
+    description: '이 팀이 생성된 날짜 ID (YYYY-MM-DD 또는 timestamp string)',
+    example: '2026-05-09',
+  })
+  @IsOptional()
+  @IsString()
+  dateId?: string;
 }

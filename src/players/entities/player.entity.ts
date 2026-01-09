@@ -29,9 +29,6 @@ export class Players {
   @OneToMany(() => MatchRecords, (matchRecords) => matchRecords.player)
   matchRecords: MatchRecords[];
 
-  @OneToMany(() => MembershipFees, (membershipFees) => membershipFees.player)
-  membershipFees: MembershipFees[];
-
   @OneToMany(() => TeamPlayers, (teamPlayers) => teamPlayers.player)
   teamPlayers: TeamPlayers[];
 }

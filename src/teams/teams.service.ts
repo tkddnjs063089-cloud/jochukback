@@ -20,13 +20,12 @@ export class TeamsService {
     private readonly playersRepository: Repository<Players>,
   ) {}
 
-  async create(
-    createTeamDto: CreateTeamDto,
-  ): Promise<{
+  async create(createTeamDto: CreateTeamDto): Promise<{
     message: string;
     id: number;
     teamId: number;
     teamName: string;
+    dateId: string | null;
   }> {
     try {
       if (!createTeamDto.teamName || createTeamDto.teamName.trim() === '') {
@@ -47,6 +46,7 @@ export class TeamsService {
 
       const team = this.teamsRepository.create({
         teamName: createTeamDto.teamName,
+        dateId: createTeamDto.dateId || null,
       });
       await this.teamsRepository.save(team);
 
@@ -55,6 +55,7 @@ export class TeamsService {
         id: team.id,
         teamId: team.id,
         teamName: team.teamName,
+        dateId: team.dateId,
       };
     } catch (error) {
       console.error('[TeamsService.create] 에러:', error);

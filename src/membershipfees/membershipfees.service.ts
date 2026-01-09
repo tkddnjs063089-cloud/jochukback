@@ -22,9 +22,9 @@ export class MembershipfeesService {
   ): Promise<{ message: string; id: number; membershipFee: MembershipFees }> {
     try {
       // 필수 필드 검증
-      if (!createMembershipFeeDto.playerId) {
+      if (!createMembershipFeeDto.playerName) {
         throw new BadRequestException(
-          '[프론트엔드 문제] playerId 필드가 누락되었습니다.',
+          '[프론트엔드 문제] playerName 필드가 누락되었습니다.',
         );
       }
       if (!createMembershipFeeDto.revenueDate) {
@@ -42,7 +42,7 @@ export class MembershipfeesService {
         revenueDate: createMembershipFeeDto.revenueDate,
         amount: createMembershipFeeDto.amount,
         monthCount: createMembershipFeeDto.monthCount,
-        player: { id: createMembershipFeeDto.playerId },
+        playerName: createMembershipFeeDto.playerName,
       });
       await this.membershipFeesRepository.save(membershipFee);
 
@@ -63,7 +63,7 @@ export class MembershipfeesService {
 
       if (error.code === '23503') {
         throw new BadRequestException(
-          '[프론트엔드 문제] 존재하지 않는 선수 ID입니다. playerId를 확인해주세요.',
+          '[프론트엔드 문제] 존재하지 않는 선수 이름입니다. playerName를 확인해주세요.',
         );
       }
       if (error.code === '22P02') {
@@ -81,7 +81,6 @@ export class MembershipfeesService {
   async findAll(): Promise<MembershipFees[]> {
     try {
       return await this.membershipFeesRepository.find({
-        relations: ['player'],
         order: { revenueDate: 'DESC' },
       });
     } catch (error) {
@@ -102,7 +101,6 @@ export class MembershipfeesService {
 
       const membershipFee = await this.membershipFeesRepository.findOne({
         where: { id },
-        relations: ['player'],
       });
       if (!membershipFee) {
         throw new NotFoundException(

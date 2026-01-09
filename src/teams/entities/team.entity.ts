@@ -25,6 +25,9 @@ export class Teams {
   })
   createdAt: Date | null;
 
+  @Column('timestamp without time zone', { name: 'date_id', nullable: true })
+  dateId: string | null;
+
   @OneToMany(() => MatchRecords, (matchRecords) => matchRecords.team)
   matchRecords: MatchRecords[];
 

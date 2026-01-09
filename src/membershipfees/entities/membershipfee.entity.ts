@@ -20,6 +20,9 @@ export class MembershipFees {
   @Column('integer', { name: 'amount', default: () => '0' })
   amount: number;
 
+  @Column('character varying', { name: 'player_name', length: 50 })
+  playerName: string;
+
   @Column('integer', { name: 'month_count', default: () => '1' })
   monthCount: number;
 
@@ -29,8 +32,4 @@ export class MembershipFees {
     default: () => 'CURRENT_TIMESTAMP',
   })
   createdAt: Date | null;
-
-  @ManyToOne(() => Players, (players) => players.membershipFees)
-  @JoinColumn([{ name: 'player_id', referencedColumnName: 'id' }])
-  player: Players;
 }
