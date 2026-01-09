@@ -20,6 +20,7 @@ import { MembershipfeesModule } from './membershipfees/membershipfees.module';
 import { MembershipFees } from './membershipfees/entities/membershipfee.entity';
 import { TeamPlayersModule } from './team-players/team-players.module';
 import { TeamPlayers } from './team-players/entities/team-player.entity';
+import { MatchResultModule } from './match_result/match_result.module';
 
 @Module({
   imports: [
@@ -55,6 +56,7 @@ import { TeamPlayers } from './team-players/entities/team-player.entity';
     TeamsModule,
     MembershipfeesModule,
     TeamPlayersModule,
+    MatchResultModule,
   ],
   controllers: [AppController],
   providers: [AppService],
