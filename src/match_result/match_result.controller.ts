@@ -19,8 +19,8 @@ import {
 } from '@nestjs/swagger';
 import { MatchResults } from './entities/match_result.entity';
 
-@ApiTags('match-result')
-@Controller('match-result')
+@ApiTags('match-results')
+@Controller('match-results')
 export class MatchResultController {
   constructor(private readonly matchResultService: MatchResultService) {}
   @Post()
