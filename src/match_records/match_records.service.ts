@@ -175,20 +175,20 @@ export class MatchRecordsService {
     try {
       if (!dateId) {
         throw new BadRequestException(
-          '[프론트엔드 문제] 유효한 경기 기록 dateId가 필요합니다.',
+          '[프론트엔드 문제] 유효한 경기 기록 dateId 값이 필요합니다.',
         );
       }
 
-      const matchRecord = await this.matchRecordsRepository.findOne({
+      const matchRecords = await this.matchRecordsRepository.find({
         where: { dateId },
         relations: ['player', 'team'],
       });
-      if (!matchRecord) {
+      if (!matchRecords) {
         throw new NotFoundException(
-          `[프론트엔드 문제] dateId가 ${dateId}인 경기 기록을 찾을 수 없습니다.`,
+          `[프론트엔드 문제] dateId 값이 ${dateId}인 경기 기록 목록을 찾을 수 없습니다.`,
         );
       }
-      return [matchRecord];
+      return matchRecords;
     } catch (error) {
       console.error('[MatchRecordsService.findByDateId] 에러:', error);
 
