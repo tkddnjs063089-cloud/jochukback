@@ -16,16 +16,52 @@ export class MatchResultService {
     private readonly matchResultsRepository: Repository<MatchResults>,
   ) {}
   async create(createDto: CreateMatchResultDto) {
-    const data = {
-      ...createDto,
-      dateId: new Date(createDto.dateId),
-    };
-    return await this.matchResultsRepository.save(data);
+    // dateId 변환: 'YYYY-MM-DD' 형식으로 통일
+    let dateIdValue: string = createDto.dateId;
+    if (createDto.dateId) {
+      const d = new Date(createDto.dateId);
+      if (!isNaN(d.getTime())) {
+        const pad = (n: number) => n.toString().padStart(2, '0');
+        dateIdValue = `${d.getFullYear()}-${pad(d.getMonth() + 1)}-${pad(
+          d.getDate(),
+        )}`;
+      }
+    }
+
+    // [UPSERT 구현] 기존 경기 결과 조회 (날짜와 양 팀 이름이 같으면 동일 경기로 간주)
+    let matchResult = await this.matchResultsRepository.findOne({
+      where: {
+        dateId: dateIdValue,
+        team1Name: createDto.team1Name,
+        team2Name: createDto.team2Name,
+      },
+    });
+
+    if (matchResult) {
+      // [UPDATE] 기존 결과 업데이트
+      console.log(
+        '[MatchResultService.create] 기존 결과 업데이트 ID:',
+        matchResult.id,
+      );
+      matchResult.team1Score = createDto.team1Score;
+      matchResult.team2Score = createDto.team2Score;
+    } else {
+      // [INSERT] 신규 생성
+      console.log('[MatchResultService.create] 신규 결과 생성');
+      matchResult = this.matchResultsRepository.create({
+        ...createDto,
+        dateId: dateIdValue,
+      });
+    }
+
+    return await this.matchResultsRepository.save(matchResult);
   }
 
   async findAll(): Promise<MatchResults[]> {
     try {
-      return await this.matchResultsRepository.find();
+      return await this.matchResultsRepository.find({
+        order: { id: 'ASC' },
+      });
     } catch (error) {
       console.error('[MatchResultService.findAll] 에러:', error);
       throw new InternalServerErrorException(
@@ -33,17 +69,12 @@ export class MatchResultService {
       );
     }
   }
-  async findByDateId(dateId: Date): Promise<MatchResults[]> {
+
+  async findByDateId(dateId: string): Promise<MatchResults[]> {
     try {
-      const matchResults = await this.matchResultsRepository.find({
-        where: { dateId: new Date(dateId) },
+      return await this.matchResultsRepository.find({
+        where: { dateId: dateId },
       });
-      if (!matchResults) {
-        throw new NotFoundException(
-          `[프론트엔드 문제] dateId 값이 ${dateId}인 경기 결과 목록을 찾을 수 없습니다. dateId를 확인해주세요.`,
-        );
-      }
-      return matchResults;
     } catch (error) {
       console.error('[MatchResultService.findByDateId] 에러:', error);
       throw new InternalServerErrorException(

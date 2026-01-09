@@ -52,10 +52,15 @@ export class MatchResultController {
     summary: 'dateId로 특정 경기 결과 조회',
     description: 'dateId로 특정 경기 결과 목록을 조회합니다.',
   })
-  @ApiParam({ name: 'dateId', description: '경기 결과 dateId', type: Date })
+  @ApiParam({
+    name: 'dateId',
+    description: '경기 결과 dateId (YYYY-MM-DD)',
+    example: '2026-01-05',
+    type: String,
+  })
   @ApiResponse({ status: 200, description: '경기 결과 목록 조회 성공' })
-  async findByDateId(@Param('dateId') dateId: Date): Promise<MatchResults[]> {
-    return await this.matchResultService.findByDateId(new Date(dateId));
+  async findByDateId(@Param('dateId') dateId: string): Promise<MatchResults[]> {
+    return await this.matchResultService.findByDateId(dateId);
   }
   @Patch(':dateId')
   @ApiOperation({

@@ -1,13 +1,12 @@
 import { Column, Entity, Index, PrimaryGeneratedColumn } from 'typeorm';
 
-@Index('match_results_pkey', ['id'], { unique: true })
 @Entity('match_results', { schema: 'public' })
 export class MatchResults {
   @PrimaryGeneratedColumn({ type: 'bigint', name: 'id' })
   id: number;
 
   @Column('timestamp without time zone', { name: 'date_id' })
-  dateId: Date;
+  dateId: string;
 
   @Column('character varying', { name: 'team1_name', length: 50 })
   team1Name: string;
