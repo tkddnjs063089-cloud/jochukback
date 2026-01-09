@@ -23,6 +23,11 @@ export class CreateExpenseDto {
   @IsNotEmpty({ message: '카테고리는 필수 입력 항목입니다.' })
   category: string;
 
+  @ApiProperty({ description: '월 지출 횟수', example: 50000 })
+  @IsNumber()
+  @IsNotEmpty({ message: '월 지출 금액은 필수 입력 항목입니다.' })
+  monthCount: number;
+
   @ApiPropertyOptional({
     description: '지출 내역 설명',
     example: '지출 내역 설명',

@@ -33,8 +33,16 @@ export class ExpensesService {
           '[프론트엔드 문제] amount 필드가 누락되었습니다.',
         );
       }
+      if (!createExpenseDto.monthCount) {
+        throw new BadRequestException(
+          '[프론트엔드 문제] monthCount 필드가 누락되었습니다.',
+        );
+      }
 
-      const expense = this.expensesRepository.create(createExpenseDto);
+      const expense = this.expensesRepository.create({
+        ...createExpenseDto,
+        monthCount: createExpenseDto.monthCount,
+      });
       await this.expensesRepository.save(expense);
 
       return {
@@ -123,6 +131,11 @@ export class ExpensesService {
           '[프론트엔드 문제] 유효한 지출 ID가 필요합니다.',
         );
       }
+      if (!updateExpenseDto.monthCount) {
+        throw new BadRequestException(
+          '[프론트여드 문제] monthCount 필드가 누락되었습니다.',
+        );
+      }
 
       const expense = await this.expensesRepository.findOne({ where: { id } });
       if (!expense) {
@@ -132,7 +145,10 @@ export class ExpensesService {
       }
 
       await this.expensesRepository.save(
-        Object.assign(expense, updateExpenseDto),
+        Object.assign(expense, {
+          ...updateExpenseDto,
+          monthCount: updateExpenseDto.monthCount,
+        }),
       );
 
       return {
