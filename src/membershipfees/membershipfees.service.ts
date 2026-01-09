@@ -88,9 +88,20 @@ export class MembershipfeesService {
           '[백엔드 문제] membershipFeesRepository.find 함수가 정의되어 있지 않습니다.',
         );
       }
-      return await this.membershipFeesRepository.find({
-        order: { revenueDate: 'DESC' },
-      });
+      try {
+        return await this.membershipFeesRepository.find({
+          order: { revenueDate: 'DESC' },
+        });
+      } catch (frontendErr) {
+        // 프론트 관련 에러를 여기서 구분하여 잡아서 던짐
+        console.error(
+          '[MembershipfeesService.findAll] 프론트엔드 연관 에러:',
+          frontendErr,
+        );
+        throw new BadRequestException(
+          `[프론트엔드 문제] 회비 목록을 불러오는 중 오류가 발생했습니다. 상세: ${frontendErr.message}`,
+        );
+      }
     } catch (error) {
       console.error('[MembershipfeesService.findAll] 에러:', error);
       throw new InternalServerErrorException(
